@@ -1,0 +1,221 @@
+<%- include ("includes/header") %>
+
+<section>
+	<div class="gap gray-bg">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row" id="page-contents">
+
+						<div class="col-md-3">
+
+						</div>
+
+						<div class="col-md-6">
+
+							<div id="show-complete-applications">
+                                <!-- showCompletedApplicationsfeed(); -->
+                            </div>
+
+							<div class="loadMore" id="show-pending-applications">
+                                <!-- showPendingApplicationsfeed(); -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+    var isMyProjects = true;
+    function showCompletedApplicationsfeed() {
+        var ajax = new XMLHttpRequest();
+        ajax.open("POST", "/getCompletedApplicationsfeed", true);
+
+        ajax.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+
+                var response = JSON.parse(this.responseText);
+
+                var html = "";
+                html += "Completed Applications";
+                html += '<hr>';
+                html += '<div class="central-meta item">';
+                for (var a = 0; a < response.data.length; a++) {
+                    var data = response.data[a];
+
+                    if (data.status == "completed") {
+                        html += '<div class="central-meta item">';
+                            html += '<div class="user-project">';
+                                html += '<div class="project-info">';
+
+                                    // html += '<figure>';
+                                    // 	html += '<img src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
+                                    // html += '</figure>';
+
+                                    html += '<div class="title">';
+                                            html += '<p>';
+                                                html += data.title;
+                                            html += '</p>';
+                                    html += '</div>';
+
+                                    // html += '<div class="user-name">';
+                                    //     html += '<span>Added by: ';
+                                    //     html += '<ins>';
+                                    //             html += '<a href="/user/' + data.user._id + '">';
+                                    //                 html += data.user.name;
+                                    //             html += '</a>';
+                                    //     html += '</ins>';
+                                    //     html+= '</span>';
+                                    // html += '</div>';
+
+                                    html += '<div class="project-date">';
+                                        var createdAt = new Date(data.createdAt);
+                                        var date = createdAt.getDate() + "";
+                                        date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+
+                                        html += '<span>Floated on: ' + date + '</span>';
+                                    html += '</div>';
+
+                                    html += '<div class="project-meta">';
+                                        
+                                        html += '<div>';
+                                            html+= 'Description';
+                                        
+                                        
+                                            html += '<div class="description">';
+                                                html += '<p>';
+                                                    html += data.description;
+                                                html += '</p>';
+                                            html += '</div>';
+
+                                        html += '</div>';
+
+                                        html += '<div>';
+                                            html+= 'Skills required';
+                                        
+                                            html += '<div class="skills">';
+                                                html += '<p>';
+                                                    html += data.skills;
+                                                html += '</p>';
+                                            html += '</div>';
+                                        html += '</div>';
+                                        html+=createLikesSection(data);
+                                        html+=createCommentsSection(data);
+
+                                    html += '</div>';
+                                html += '</div>';
+                            html += '</div>';
+                        html += '</div>';
+                    }
+                }
+                html += '</div>';
+                document.getElementById("show-complete-applications").innerHTML = html;
+            }
+        };
+
+
+
+        var formData = new FormData();
+        formData.append("accessToken", localStorage.getItem("accessToken"));
+        ajax.send(formData);
+    }
+
+    function showPendingApplicationsfeed() {
+        var ajax = new XMLHttpRequest();
+        ajax.open("POST", "/getPendingApplicationsfeed", true);
+
+        ajax.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+
+                var response = JSON.parse(this.responseText);
+
+                var html = "";
+                html += "Pending Applications";
+                html += '<hr>';
+                html += '<div class="central-meta item">';
+                for (var a = 0; a < response.data.length; a++) {
+                    var data = response.data[a];
+
+                    if (data.status == "pending") {
+                        html += '<div class="central-meta item">';
+                            html += '<div class="user-project">';
+                                html += '<div class="project-info">';
+
+                                    // html += '<figure>';
+                                    // 	html += '<img src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
+                                    // html += '</figure>';
+
+                                    html += '<div class="title">';
+                                            html += '<p>';
+                                                html += data.title;
+                                            html += '</p>';
+                                    html += '</div>';
+
+                                    // html += '<div class="user-name">';
+                                    //     html += '<span>Added by: ';
+                                    //     html += '<ins>';
+                                    //             html += '<a href="/user/' + data.user._id + '">';
+                                    //                 html += data.user.name;
+                                    //             html += '</a>';
+                                    //     html += '</ins>';
+                                    //     html+= '</span>';
+                                    // html += '</div>';
+
+                                    html += '<div class="project-date">';
+                                        var createdAt = new Date(data.createdAt);
+                                        var date = createdAt.getDate() + "";
+                                        date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+
+                                        html += '<span>Floated on: ' + date + '</span>';
+                                    html += '</div>';
+
+                                    html += '<div class="project-meta">';
+                                        
+                                        html += '<div>';
+                                            html+= 'Description';
+                                        
+                                        
+                                            html += '<div class="description">';
+                                                html += '<p>';
+                                                    html += data.description;
+                                                html += '</p>';
+                                            html += '</div>';
+
+                                        html += '</div>';
+
+                                        html += '<div>';
+                                            html+= 'Skills required';
+                                        
+                                            html += '<div class="skills">';
+                                                html += '<p>';
+                                                    html += data.skills;
+                                                html += '</p>';
+                                            html += '</div>';
+                                        html += '</div>';
+                                        html+=createLikesSection(data);
+                                        html+=createCommentsSection(data);
+
+                                    html += '</div>';
+                                html += '</div>';
+                            html += '</div>';
+                        html += '</div>';
+                    }
+                }
+                html += '</div>';
+                document.getElementById("show-pending-applications").innerHTML = html;
+            }
+        };
+
+
+
+        var formData = new FormData();
+        formData.append("accessToken", localStorage.getItem("accessToken"));
+        ajax.send(formData);
+    }
+
+    
+</script>
+<%- include ("includes/footer") %>

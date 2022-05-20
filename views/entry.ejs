@@ -1,0 +1,63 @@
+<html>
+<head>
+	<title>Design credit management portal</title>
+
+	<link rel="stylesheet" href="/public/css/main.min.css">
+	<link rel="stylesheet" href="/public/css/style.css">
+	<link rel="stylesheet" href="/public/css/color.css">
+	<link rel="stylesheet" href="/public/css/responsive.css">
+
+</head>
+<body>
+    <div class="bkc" >
+        <img src="public\images\female.png" alt=""  width="400px">
+        <h2 class="log-title">Are you a mentor ?</h2>
+        <form onsubmit="return doRegisterMentor(this);">
+            <div class="submit-btns">
+                <button class="mtr-btn enter btnmodify" name="submit" type="submit">
+                    <span style="color:black">Enter</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="bkc2">
+        <img src="public\images\graduating-student.png" alt="" width="400px">
+        <h2 class="log-title">Are you a student ?</h2>
+        <form onsubmit="return doRegisterStudent(this);">
+            <div class="submit-btns">
+                <button class="mtr-btn btnmodify" name="submit" type="submit">
+                    <span style="color:black">Enter</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="lineb"></div>
+    
+	<script>
+		function doRegisterMentor(form) {
+			form.submit.setAttribute("disabled", "disabled");
+			form.submit.innerHTML = "<span>Loading...</span>";
+            window.location.href = "/loginMentor";
+			var ajax = new XMLHttpRequest();
+			ajax.open("POST", "/entry", true);
+
+			ajax.send(new FormData(form));
+			return false;
+		}
+
+        function doRegisterStudent(form) {
+			form.submit.setAttribute("disabled", "disabled");
+			form.submit.innerHTML = "<span>Loading...</span>";
+            window.location.href = "/loginStudent";
+			var ajax = new XMLHttpRequest();
+			ajax.open("POST", "/entry", true);
+
+			ajax.send(new FormData(form));
+			return false;
+		}
+	</script>
+
+</body>
+
+</html>

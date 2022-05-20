@@ -1,0 +1,58 @@
+<%- include ("includes/header") %>
+
+<section>
+	<div class="gap gray-bg">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row" id="page-contents">
+
+						<div class="col-md-3">
+
+						</div>
+
+						<div class="col-md-6">
+
+							<div id="add-project-box"></div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	var isAddProjectPage = true;
+
+	function addNewProject(form){
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/addNewProject", true);
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status==200){
+				var response = JSON.parse(this.responseText);
+				alert(response.message);
+				if(response.status == "success"){
+					document.getElementById("form-add-project").querySelector("textarea[name='title']").value="";
+					document.getElementById("form-add-project").querySelector("textarea[name='description']").value="";
+					document.getElementById("form-add-project").querySelector("textarea[name='skills']").value="";
+					window.location.href = "/allProjects";
+					// showprojectsfeed();
+				}
+			}
+		};
+
+		var formData = new FormData(form);
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		ajax.send(formData);
+
+		return false;
+	}
+
+	
+</script>
+
+<%- include ("includes/footer") %>

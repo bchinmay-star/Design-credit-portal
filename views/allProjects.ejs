@@ -1,0 +1,208 @@
+<%- include ("includes/header") %>
+
+<section>
+	<div class="gap gray-bg">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row" id="page-contents">
+
+						<div class="col-md-3">
+
+						</div>
+
+						<div class="col-md-6">
+
+							<div id="add-project-btn">
+								<form onsubmit="return addProjectBtn(this);">
+									<div class="submit-btns">
+										<button name="submit" type="submit">
+											<span style="color:black">Add new project</span>
+										</button>
+									</div>
+								</form>
+							</div>
+
+							<div class="loadMore" id="projectsfeed">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	var isAllProjectsPage = true;
+
+	function addProjectBtn(form) {
+		form.submit.setAttribute("disabled", "disabled");
+		form.submit.innerHTML = "<span>Loading...</span>";
+        window.location.href = "/addNewProject";
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/allProjects", true);
+		ajax.send(new FormData(form));
+		return false;
+	}
+
+	// function doPost(form){
+	// 	var ajax = new XMLHttpRequest();
+	// 	ajax.open("POST", "/addproject", true);
+
+	// 	ajax.onreadystatechange = function() {
+	// 		if (this.readyState == 4 && this.status==200){
+	// 			var response = JSON.parse(this.responseText);
+	// 			alert(response.message);
+	// 			if(response.status == "success"){
+	// 				document.getElementById("form-add-project").querySelector("textarea[name='title']").value="";
+	// 				document.getElementById("form-add-project").querySelector("textarea[name='description']").value="";
+	// 				document.getElementById("form-add-project").querySelector("textarea[name='skills']").value="";
+					
+	// 				showprojectsfeed();
+	// 			}
+	// 		}
+	// 	};
+
+	// 	var formData = new FormData(form);
+	// 	formData.append("accessToken", localStorage.getItem("accessToken"));
+	// 	ajax.send(formData);
+
+	// 	return false;
+	// }
+
+	function showprojectsfeed() {
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/getprojectsfeed", true);
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+
+				var response = JSON.parse(this.responseText);
+
+				var html = "";
+				html += "All projects";
+				html += '<hr>';
+				html += '<div class="central-meta item">';
+				for (var a = 0; a < response.data.length; a++) {
+					var data = response.data[a];
+
+					html += '<div class="central-meta item">';
+						html += '<div class="user-project">';
+							html += '<div class="project-info">';
+
+								// html += '<figure>';
+								// 	html += '<img src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
+								// html += '</figure>';
+
+								html += '<div class="title">';
+										html += '<p>';
+											html += data.title;
+										html += '</p>';
+								html += '</div>';
+
+								html += '<div class="user-name">';
+									html += '<span>Added by: ';
+									html += '<ins>';
+											html += '<a href="/user/' + data.user._id + '">';
+												html += data.user.name;
+											html += '</a>';
+									html += '</ins>';
+									html+= '</span>';
+								html += '</div>';
+
+								html += '<div class="project-date">';
+									var createdAt = new Date(data.createdAt);
+									var date = createdAt.getDate() + "";
+									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+
+									html += '<span>Floated on: ' + date + '</span>';
+								html += '</div>';
+
+								html += '<div class="project-meta">';
+									
+									html += '<div>';
+										html+= 'Description';
+									
+									
+										html += '<div class="description">';
+											html += '<p>';
+												html += data.description;
+											html += '</p>';
+										html += '</div>';
+
+									html += '</div>';
+
+									html += '<div>';
+										html+= 'Skills required';
+									
+										html += '<div class="skills">';
+											html += '<p>';
+												html += data.skills;
+											html += '</p>';
+										html += '</div>';
+									html += '</div>';
+									html+=createLikesSection(data);
+									html+=createCommentsSection(data);
+
+									if (data.status == "pending") {
+										var isMentee = false;
+										for (var b=0;b<data.mentees.length;b++){
+											var tempData=data.mentees[b];
+											if(tempData._id == window.user._id){
+												isMentee=true;
+												break;
+											}
+										}
+
+										html += '<div>';
+										if(!isMentee && data.user._id!=window.user._id){
+											
+												html+='<form>'
+													html+='<button type="submit" class="show-interest-btn" user-id="'+ window.user._id +'" data-id="' + data._id + '" onclick="addMenteeRequest(this);" class="btn add mentee">Show interest</button>'
+												html+='</form>'
+											
+										}
+										html += '</div>';
+									}
+								html += '</div>';
+							html += '</div>';
+						html += '</div>';
+					html += '</div>';
+				}
+				html += '</div>';
+				document.getElementById("projectsfeed").innerHTML = html;
+			}
+		};
+
+
+
+		var formData = new FormData();
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		ajax.send(formData);
+	}
+
+	function addMenteeRequest(self){
+		var _id = self.getAttribute("data-id");
+		var user_id = self.getAttribute("user-id");
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/addMenteeRequest", true);
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState ==4 && this.status == 200){
+				var response = JSON.parse(this.responseText);
+				alert(response.message);
+				self.remove();
+			}
+		};
+
+		var formData = new FormData();
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		formData.append("_id", _id);
+		formData.append("user_id", user_id);
+		ajax.send(formData);
+	}
+</script>
+
+<%- include ("includes/footer") %>
