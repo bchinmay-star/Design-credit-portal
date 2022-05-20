@@ -233,7 +233,11 @@ http.listen(3000, function () {
 			result.redirect("/loginMentor");
 		});
 
-		app.get("/logoutStudent", function (request, result) {
+		// app.get("/logoutStudent", function (request, result) {
+		// 	result.redirect("/loginStudent");
+		// });
+
+		app.get("/studentLogout", function (request, result) {
 			result.redirect("/loginStudent");
 		});
 
@@ -243,6 +247,10 @@ http.listen(3000, function () {
 
 		app.get("/updateProfileStudent", function (request, result) {
 			result.render("updateProfileStudent");
+		});
+
+		app.get("/studentUpdateProfile", function (request, result) {
+			result.render("studentUpdateProfile");
 		});
 
         app.post("/getUserMentor", function (request, result) {
