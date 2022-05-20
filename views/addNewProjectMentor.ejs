@@ -29,7 +29,7 @@
 
 	function addNewProject(form){
 		var ajax = new XMLHttpRequest();
-		ajax.open("POST", "/addNewProject", true);
+		ajax.open("POST", "/addNewProjectMentor", true);
 
 		ajax.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status==200){
@@ -39,7 +39,7 @@
 					document.getElementById("form-add-project").querySelector("textarea[name='title']").value="";
 					document.getElementById("form-add-project").querySelector("textarea[name='description']").value="";
 					document.getElementById("form-add-project").querySelector("textarea[name='skills']").value="";
-					window.location.href = "/allProjects";
+					window.location.href = "/allProjectsMentor";
 					// showprojectsfeed();
 				}
 			}

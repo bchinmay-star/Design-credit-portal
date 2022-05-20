@@ -92,7 +92,7 @@ function showMainMenu() {
 
     if (localStorage.getItem("accessToken")) {
         html += '<li>';
-            html += '<a href="/allProjects">All projects</a> ';
+            html += '<a href="/allProjectsMentor">All projects</a> ';
         html += '</li>';
 
         html += '<li>';
@@ -108,7 +108,7 @@ function showMainMenu() {
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/logout" onclick="return doLogout();">Logout</a>';
+            html += '<a href="/logoutMentor" onclick="return doLogoutMentor();">Logout</a>';
         html += '</li>';
     } else {
         html += '<li>';
@@ -123,7 +123,7 @@ function showMainMenu() {
     document.getElementById("main-menu").innerHTML = html;
 }
 
-function doLogout() {
+function doLogoutMentor() {
     localStorage.removeItem("accessToken");
     return true;
 }

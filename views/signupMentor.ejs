@@ -42,7 +42,7 @@
 									<i class="mtrl-select"></i>
 								</div>
 
-								<div class="form-radio">
+								<!-- <div class="form-radio">
 									<div class="radio">
 										<label>
 											<input type="radio" name="gender" value="Male" checked />
@@ -56,9 +56,9 @@
 											<i class="check-box"></i> Female
 										</label>
 									</div>
-								</div>
+								</div> -->
 
-								<a href="/login">Already have an account</a>
+								<a href="/loginMentor">Already have an account</a>
 								<div class="submit-btns">
 									<button class="mtr-btn signup" name="submit" type="submit">
 										<span>Register</span>
@@ -78,7 +78,7 @@
 			form.submit.innerHTML = "<span>Loading...</span>";
 
 			var ajax = new XMLHttpRequest();
-			ajax.open("POST", "/signup", true);
+			ajax.open("POST", "/signupMentor", true);
 
 			ajax.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
@@ -89,7 +89,7 @@
 					alert(response.message);
 
 					if (response.status == "success") {
-						window.location.href = "/login";
+						window.location.href = "/loginMentor";
 					}
 				}
 			};

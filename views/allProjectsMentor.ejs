@@ -1,7 +1,7 @@
 <%- include ("includes/header") %>
 
 <section>
-	<div class="gap gray-bg">
+	<div class="gap blue-bg">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
@@ -13,10 +13,10 @@
 
 						<div class="col-md-6">
 
-							<div id="add-project-btn">
+							<div id="add-project-btn" class="tryhard">
 								<form onsubmit="return addProjectBtn(this);">
 									<div class="submit-btns">
-										<button name="submit" type="submit">
+										<button name="submit" type="submit" class=" btnmodify2">
 											<span style="color:black">Add new project</span>
 										</button>
 									</div>
@@ -40,37 +40,13 @@
 	function addProjectBtn(form) {
 		form.submit.setAttribute("disabled", "disabled");
 		form.submit.innerHTML = "<span>Loading...</span>";
-        window.location.href = "/addNewProject";
+        window.location.href = "/addNewProjectMentor";
 		var ajax = new XMLHttpRequest();
-		ajax.open("POST", "/allProjects", true);
+		ajax.open("POST", "/allProjectsMentor", true);
 		ajax.send(new FormData(form));
 		return false;
 	}
 
-	// function doPost(form){
-	// 	var ajax = new XMLHttpRequest();
-	// 	ajax.open("POST", "/addproject", true);
-
-	// 	ajax.onreadystatechange = function() {
-	// 		if (this.readyState == 4 && this.status==200){
-	// 			var response = JSON.parse(this.responseText);
-	// 			alert(response.message);
-	// 			if(response.status == "success"){
-	// 				document.getElementById("form-add-project").querySelector("textarea[name='title']").value="";
-	// 				document.getElementById("form-add-project").querySelector("textarea[name='description']").value="";
-	// 				document.getElementById("form-add-project").querySelector("textarea[name='skills']").value="";
-					
-	// 				showprojectsfeed();
-	// 			}
-	// 		}
-	// 	};
-
-	// 	var formData = new FormData(form);
-	// 	formData.append("accessToken", localStorage.getItem("accessToken"));
-	// 	ajax.send(formData);
-
-	// 	return false;
-	// }
 
 	function showprojectsfeed() {
 		var ajax = new XMLHttpRequest();
@@ -82,7 +58,9 @@
 				var response = JSON.parse(this.responseText);
 
 				var html = "";
+				html+= '<h2 class="">';
 				html += "All projects";
+				html+= "</h2>";
 				html += '<hr>';
 				html += '<div class="central-meta item">';
 				for (var a = 0; a < response.data.length; a++) {
@@ -96,31 +74,33 @@
 								// 	html += '<img src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
 								// html += '</figure>';
 
-								html += '<div class="title">';
-										html += '<p>';
+								html += '<div class="title colortxtblack">';
+										html += '<h2>';
 											html += data.title;
-										html += '</p>';
+										html += '</h2>';
 								html += '</div>';
+								html+='<hr>';
 
-								html += '<div class="user-name">';
+								html += '<div class="user-name colortxtblack">';
 									html += '<span>Added by: ';
-									html += '<ins>';
-											html += '<a href="/user/' + data.user._id + '">';
+									// html += '<ins >';
+											// html += '<a href="/user/' + data.user._id + '">';
 												html += data.user.name;
-											html += '</a>';
-									html += '</ins>';
+											// html += '</a>';
+									// html += '</ins>';
 									html+= '</span>';
 								html += '</div>';
 
-								html += '<div class="project-date">';
+								html += '<div class="project-date colortxtblack">';
 									var createdAt = new Date(data.createdAt);
 									var date = createdAt.getDate() + "";
 									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
 
 									html += '<span>Floated on: ' + date + '</span>';
 								html += '</div>';
+								html+='<br>';
 
-								html += '<div class="project-meta">';
+								html += '<div class="project-meta colortxtblack">';
 									
 									html += '<div>';
 										html+= 'Description';
@@ -143,29 +123,31 @@
 											html += '</p>';
 										html += '</div>';
 									html += '</div>';
-									html+=createLikesSection(data);
+									html+='<hr>';
+
+									// html+=createLikesSection(data);
 									html+=createCommentsSection(data);
 
-									if (data.status == "pending") {
-										var isMentee = false;
-										for (var b=0;b<data.mentees.length;b++){
-											var tempData=data.mentees[b];
-											if(tempData._id == window.user._id){
-												isMentee=true;
-												break;
-											}
-										}
+									// if (data.status == "pending") {
+									// 	var isMentee = false;
+									// 	for (var b=0;b<data.mentees.length;b++){
+									// 		var tempData=data.mentees[b];
+									// 		if(tempData._id == window.user._id){
+									// 			isMentee=true;
+									// 			break;
+									// 		}
+									// 	}
 
-										html += '<div>';
-										if(!isMentee && data.user._id!=window.user._id){
+									// 	html += '<div>';
+									// 	if(!isMentee && data.user._id!=window.user._id){
 											
-												html+='<form>'
-													html+='<button type="submit" class="show-interest-btn" user-id="'+ window.user._id +'" data-id="' + data._id + '" onclick="addMenteeRequest(this);" class="btn add mentee">Show interest</button>'
-												html+='</form>'
+									// 			html+='<form>'
+									// 				html+='<button type="submit" class="show-interest-btn" user-id="'+ window.user._id +'" data-id="' + data._id + '" onclick="addMenteeRequest(this);" class="btn add mentee">Show interest</button>'
+									// 			html+='</form>'
 											
-										}
-										html += '</div>';
-									}
+									// 	}
+									// 	html += '</div>';
+									// }
 								html += '</div>';
 							html += '</div>';
 						html += '</div>';
@@ -183,26 +165,26 @@
 		ajax.send(formData);
 	}
 
-	function addMenteeRequest(self){
-		var _id = self.getAttribute("data-id");
-		var user_id = self.getAttribute("user-id");
-		var ajax = new XMLHttpRequest();
-		ajax.open("POST", "/addMenteeRequest", true);
+	// function addMenteeRequest(self){
+	// 	var _id = self.getAttribute("data-id");
+	// 	var user_id = self.getAttribute("user-id");
+	// 	var ajax = new XMLHttpRequest();
+	// 	ajax.open("POST", "/addMenteeRequest", true);
 
-		ajax.onreadystatechange = function() {
-			if (this.readyState ==4 && this.status == 200){
-				var response = JSON.parse(this.responseText);
-				alert(response.message);
-				self.remove();
-			}
-		};
+	// 	ajax.onreadystatechange = function() {
+	// 		if (this.readyState ==4 && this.status == 200){
+	// 			var response = JSON.parse(this.responseText);
+	// 			alert(response.message);
+	// 			self.remove();
+	// 		}
+	// 	};
 
-		var formData = new FormData();
-		formData.append("accessToken", localStorage.getItem("accessToken"));
-		formData.append("_id", _id);
-		formData.append("user_id", user_id);
-		ajax.send(formData);
-	}
+	// 	var formData = new FormData();
+	// 	formData.append("accessToken", localStorage.getItem("accessToken"));
+	// 	formData.append("_id", _id);
+	// 	formData.append("user_id", user_id);
+	// 	ajax.send(formData);
+	// }
 </script>
 
 <%- include ("includes/footer") %>

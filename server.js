@@ -36,16 +36,15 @@ http.listen(3000, function () {
 		var database = client.db("design_credit_management");
 		console.log("Database connected.");
 
-        app.get("/signup", function (request, result) {
-			result.render("signup");
+        app.get("/signupMentor", function (request, result) {
+			result.render("signupMentor");
 		});
 
-		app.post("/signup", function (request, result) {
+		app.post("/signupMentor", function (request, result) {
 			var name = request.fields.name;
 			var username = request.fields.username;
 			var email = request.fields.email;
 			var password = request.fields.password;
-			var gender = request.fields.gender;
 			var reset_token = "";
 
 			database.collection("mentors").findOne({
@@ -62,13 +61,12 @@ http.listen(3000, function () {
 							"username": username,
 							"email": email,
 							"password": hash,
-							"gender": gender,
 							"reset_token": reset_token,
 							"profileImage": "",
 							"coverPhoto": "",
-							"dob": "",
-							"city": "",
-							"country": "",
+							// "dob": "",
+							// "city": "",
+							// "country": "",
 							"aboutMe": "",
 							"friends": [],
 							"pages": [],
@@ -229,6 +227,14 @@ http.listen(3000, function () {
 					});
 				}
 			});
+		});
+
+		app.get("/logoutMentor", function (request, result) {
+			result.redirect("/loginMentor");
+		});
+
+		app.get("/logoutStudent", function (request, result) {
+			result.redirect("/loginStudent");
 		});
 
         app.get("/updateProfileMentor", function (request, result) {
@@ -542,9 +548,9 @@ http.listen(3000, function () {
         app.post("/updateProfileMentor", function (request, result) {
 			var accessToken = request.fields.accessToken;
 			var name = request.fields.name;
-			var dob = request.fields.dob;
-			var city = request.fields.city;
-			var country = request.fields.country;
+			// var dob = request.fields.dob;
+			// var city = request.fields.city;
+			// var country = request.fields.country;
 			var aboutMe = request.fields.aboutMe;
 
 			database.collection("mentors").findOne({
@@ -561,9 +567,9 @@ http.listen(3000, function () {
 					}, {
 						$set: {
 							"name": name,
-							"dob": dob,
-							"city": city,
-							"country": country,
+							// "dob": dob,
+							// "city": city,
+							// "country": country,
 							"aboutMe": aboutMe
 						}
 					}, function (error, data) {
@@ -693,8 +699,8 @@ http.listen(3000, function () {
 			result.render("entry");
 		});
 
-        app.get("/allProjects", function (request, result) {
-			result.render("allProjects");
+        app.get("/allProjectsMentor", function (request, result) {
+			result.render("allProjectsMentor");
 		});
 		
 		app.get("/allProjectsStudent", function (request, result) {
@@ -765,15 +771,15 @@ http.listen(3000, function () {
 			});
 		});
 
-		app.get("/addNewProject", function (request, result) {
-			result.render("addNewProject");
+		app.get("/addNewProjectMentor", function (request, result) {
+			result.render("addNewProjectMentor");
 		});
 
 		app.get("/addNewProjectStudent", function (request, result) {
 			result.render("addNewProjectStudent");
 		});
 
-        app.post("/addNewProject", function (request, result) {
+        app.post("/addNewProjectMentor", function (request, result) {
 
 			var accessToken = request.fields.accessToken;
 			var title = request.fields.title;
@@ -1287,6 +1293,61 @@ http.listen(3000, function () {
 									}
 								}
 							}, function (error, data){
+								result.json({
+									"status": "success",
+									"message": "Mentee request has been sent."
+								});
+							});
+							
+						}
+					})
+				}
+			});
+
+		});
+
+		app.post("/acceptRequest", function(request, result){
+			var accessToken = request.fields.accessToken;
+			var _id = request.fields._id;
+			var user_id = request.fields.user_id;
+			// console.log(_id);
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+					var me=user;
+					database.collection("projects").findOne({
+						"_id": ObjectId(_id)
+					},function(error, user){
+						// console.log(user);
+						// console.log(me);
+						if (user == null) {
+							result.json({
+								"status": "error",
+								"message": "Project does not exist."
+							});
+						}else{
+							database.collection("projects").updateOne({
+								"_id": ObjectId(_id)
+							}, {
+								$set: {
+									// "mentees": {
+									// 	"_id": me._id,
+									// 	"name": me.name,
+									// 	"profileImage": me.profileImage,
+									// 	"status": "completed",
+									// 	"sentByMe": false,
+									// 	"inbox": []
+									// },
+									"status": "completed"
+								}
+							}, function (error, data){
+								// console.log(_id);
 								result.json({
 									"status": "success",
 									"message": "Mentee request has been sent."

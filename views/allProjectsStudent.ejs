@@ -1,7 +1,7 @@
 <%- include ("includes/headerStudent") %>
 
 <section>
-	<div class="gap gray-bg">
+	<div class="gap green-bg">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
@@ -13,10 +13,10 @@
 
 						<div class="col-md-6">
 
-							<div id="add-project-btn">
+							<div id="add-project-btn" class="tryhard">
 								<form onsubmit="return proposeProjectBtn(this);">
 									<div class="submit-btns">
-										<button name="submit" type="submit">
+										<button name="submit" type="submit" class=" btnmodify2">
 											<span style="color:black">Propose new project</span>
 										</button>
 									</div>
@@ -82,7 +82,9 @@
 				var response = JSON.parse(this.responseText);
 
 				var html = "";
+				html+= '<h2 class="">';
 				html += "All projects";
+				html+= "</h2>";
 				html += '<hr>';
 				html += '<div class="central-meta item">';
 				for (var a = 0; a < response.data.length; a++) {
@@ -96,15 +98,16 @@
 								// 	html += '<img src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
 								// html += '</figure>';
 
-								html += '<div class="title">';
-										html += '<p>';
+								html += '<div class="title colortxtblack">';
+										html += '<h2>';
 											html += data.title;
-										html += '</p>';
+										html += '<h2>';
 								html += '</div>';
+								html+='<hr>';
 
-								html += '<div class="user-name">';
-									html += '<span>Added by: ';
-									html += '<ins>';
+								html += '<div class="user-name colortxtblack">';
+									html += '<span>Added by : ';
+									html += '<ins class="colortxtblue">';
 											html += '<a href="/user/' + data.user._id + '">';
 												html += data.user.name;
 											html += '</a>';
@@ -112,38 +115,37 @@
 									html+= '</span>';
 								html += '</div>';
 
-								html += '<div class="project-date">';
+								html += '<div class="project-date colortxtblack">';
 									var createdAt = new Date(data.createdAt);
 									var date = createdAt.getDate() + "";
 									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
 
-									html += '<span>Floated on: ' + date + '</span>';
+									html += '<span>Floated on : ' + date + '</span>';
 								html += '</div>';
+								html+='<br>';
 
-								html += '<div class="project-meta">';
+								html += '<div class="project-meta colortxtblack">';
 									
 									html += '<div>';
 										html+= 'Description';
-									
-									
 										html += '<div class="description">';
 											html += '<p>';
 												html += data.description;
 											html += '</p>';
 										html += '</div>';
-
 									html += '</div>';
 
 									html += '<div>';
 										html+= 'Skills required';
-									
 										html += '<div class="skills">';
 											html += '<p>';
 												html += data.skills;
 											html += '</p>';
 										html += '</div>';
 									html += '</div>';
-									html+=createLikesSection(data);
+									html+='<hr>';
+
+									// html+=createLikesSection(data);
 									html+=createCommentsSection(data);
 
 									if (data.status == "pending") {

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-	<title>Design credit management portal</title>
+	<title>Design credit management</title>
 	<!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 	<link rel="stylesheet" href="/public/css/main.min.css">
@@ -156,9 +156,12 @@
 						var comment = data.comments[b];
 
 						html += '<li>';
-							html += '<div class="comet-avatar">';
-								html += '<img src="' + mainURL + '/' + comment.user.profileImage + '">';
-							html += '</div>';
+
+							// Show avatar in comment 
+
+							// html += '<div class="comet-avatar">';
+							// 	html += '<img src="' + mainURL + '/' + comment.user.profileImage + '">';
+							// html += '</div>';
 
 							html += '<div class="we-comment">';
 								html += '<div class="coment-head">';
@@ -183,9 +186,9 @@
 									var reply = comment.replies[c];
 
 									html += '<li>';
-										html += '<div class="comet-avatar">';
-											html += '<img src="' + mainURL + '/' + reply.user.profileImage + '">';
-										html += '</div>';
+										// html += '<div class="comet-avatar">';
+										// 	html += '<img src="' + mainURL + '/' + reply.user.profileImage + '">';
+										// html += '</div>';
 
 										html += '<div class="we-comment">';
 											html += '<div class="coment-head">';
@@ -209,13 +212,13 @@
 
 					html += '<ul class="we-comet">';
 						html += '<li class="post-comment">';
-							html += '<div class="comet-avatar">';
-								html += '<img src="' + mainURL + '/' + window.user.profileImage + '">';
-							html += '</div>';
+							// html += '<div class="comet-avatar">';
+							// 	html += '<img src="' + mainURL + '/' + window.user.profileImage + '">';
+							// html += '</div>';
 							html += '<div class="post-comt-box">';
 								html += '<form method="post" onsubmit="return doPostComment(this);">';
 									html += '<input type="hidden" name="_id" value="' + data._id + '">';
-									html += '<textarea name="comment" placeholder="Post your comment"></textarea>';
+									html += '<textarea name="comment" placeholder="Ask queries"></textarea>';
 									html += '<button type="submit">Post</button>';
 								html += '</form>';
 							html += '</div>';
@@ -315,6 +318,7 @@
 									html += '<hr>';
 									html += '<input name="type" type="hidden" value="post">';
 									html += '<textarea rows="2" name="skills" placeholder="Add the required skills"></textarea>';
+									html += '<br>';
 									html += '<hr>';
 									html += '<button type="submit">Submit</button>';
 								html += '</form>';

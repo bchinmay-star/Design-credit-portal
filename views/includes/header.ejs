@@ -18,10 +18,6 @@
 		<div class="topbar stick">
 			<div class="logo">
 				<h4>Mentor</h4>
-				<!-- <a href="/" style="font-size: 28px; bottom: 3px; position: relative;">
-					<img src="/public/img/logo.png">
-					Mentor
-				</a> -->
 			</div>
 
 			<div class="top-area">
@@ -154,9 +150,9 @@
 						var comment = data.comments[b];
 
 						html += '<li>';
-							html += '<div class="comet-avatar">';
-								html += '<img src="' + mainURL + '/' + comment.user.profileImage + '">';
-							html += '</div>';
+							// html += '<div class="comet-avatar">';
+							// 	html += '<img src="' + mainURL + '/' + comment.user.profileImage + '">';
+							// html += '</div>';
 
 							html += '<div class="we-comment">';
 								html += '<div class="coment-head">';
@@ -181,9 +177,9 @@
 									var reply = comment.replies[c];
 
 									html += '<li>';
-										html += '<div class="comet-avatar">';
-											html += '<img src="' + mainURL + '/' + reply.user.profileImage + '">';
-										html += '</div>';
+										// html += '<div class="comet-avatar">';
+										// 	html += '<img src="' + mainURL + '/' + reply.user.profileImage + '">';
+										// html += '</div>';
 
 										html += '<div class="we-comment">';
 											html += '<div class="coment-head">';
@@ -207,9 +203,9 @@
 
 					html += '<ul class="we-comet">';
 						html += '<li class="post-comment">';
-							html += '<div class="comet-avatar">';
-								html += '<img src="' + mainURL + '/' + window.user.profileImage + '">';
-							html += '</div>';
+							// html += '<div class="comet-avatar">';
+							// 	html += '<img src="' + mainURL + '/' + window.user.profileImage + '">';
+							// html += '</div>';
 							html += '<div class="post-comt-box">';
 								html += '<form method="post" onsubmit="return doPostComment(this);">';
 									html += '<input type="hidden" name="_id" value="' + data._id + '">';
