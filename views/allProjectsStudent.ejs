@@ -1,4 +1,4 @@
-<%- include ("includes/headerStudent") %>
+<%- include ("includes/studentHeader") %>
 
 <section>
 	<div class="gap green-bg">
@@ -162,7 +162,7 @@
 										if(!isMentee && data.user._id!=window.user._id){
 											
 												html+='<form>'
-													html+='<button type="submit" class="show-interest-btn" user-id="'+ window.user._id +'" data-id="' + data._id + '" onclick="addMenteeRequest(this);" class="btn add mentee">Show interest</button>'
+													html+='<button type="submit" class="show-interest-btn" mentee-id="'+ window.user._id +'" project-id="' + data._id + '" mentor-id="' + data.user._id + '" onclick="addMenteeRequest(this);" class="btn add mentee">Show interest</button>'
 												html+='</form>'
 											
 										}
@@ -184,8 +184,9 @@
 	}
 
 	function addMenteeRequest(self){
-		var _id = self.getAttribute("data-id");
-		var user_id = self.getAttribute("user-id");
+		var mentee_id = self.getAttribute("mentee-id");
+		var project_id = self.getAttribute("project-id");
+		var mentor_id = self.getAttribute("mentor-id");
 		var ajax = new XMLHttpRequest();
 		ajax.open("POST", "/addMenteeRequest", true);
 
@@ -199,10 +200,11 @@
 
 		var formData = new FormData();
 		formData.append("accessToken", localStorage.getItem("accessToken"));
-		formData.append("_id", _id);
-		formData.append("user_id", user_id);
+		formData.append("mentee_id", mentee_id);
+		formData.append("project_id", project_id);
+		formData.append("mentor_id", mentor_id);
 		ajax.send(formData);
 	}
 </script>
 
-<%- include ("includes/footerStudent") %>
+<%- include ("includes/studentFooter") %>
