@@ -715,6 +715,78 @@ http.listen(3000, function () {
 			result.render("allProjectsStudent");
 		});
 
+		app.get("/myProposals", function (request, result) {
+			result.render("myProposals");
+		});
+
+		app.post("/getmyproposalsfeed", function (request, result) {
+			var accessToken = request.fields.accessToken;
+			database.collection("students").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+
+					var ids = [];
+					ids.push(user._id);
+
+					database.collection("projects")
+					.find()
+					.sort({
+						"createdAt": -1
+					})
+					.toArray(function (error, data) {
+
+						result.json({
+							"status": "success",
+							"message": "Record has been fetched",
+							"data": data
+						});
+					});
+				}
+			});
+		});
+
+		app.get("/student_proposals", function (request, result) {
+			result.render("student_proposals");
+		});
+
+		app.post("/getstudentproposalsfeed", function (request, result) {
+			var accessToken = request.fields.accessToken;
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+
+					var ids = [];
+					ids.push(user._id);
+
+					database.collection("projects")
+					.find()
+					.sort({
+						"createdAt": -1
+					})
+					.toArray(function (error, data) {
+
+						result.json({
+							"status": "success",
+							"message": "Record has been fetched",
+							"data": data
+						});
+					});
+				}
+			});
+		});
+
 		app.post("/getprojectsfeed", function (request, result) {
 			var accessToken = request.fields.accessToken;
 			database.collection("mentors").findOne({
@@ -822,7 +894,8 @@ http.listen(3000, function () {
 							"_id": user._id,
 							"name": user.name,
 							"username": user.username,
-							"profileImage": user.profileImage
+							"profileImage": user.profileImage,
+							"status": "mentor"
 						}
 					}, function (error, data) {
 
@@ -891,7 +964,8 @@ http.listen(3000, function () {
 							"_id": user._id,
 							"name": user.name,
 							"username": user.username,
-							"profileImage": user.profileImage
+							"profileImage": user.profileImage,
+							"status": "student"
 						}
 					}, function (error, data) {
 
@@ -1260,59 +1334,6 @@ http.listen(3000, function () {
 				}
 			});
 		});
-
-		// app.post("/addMenteeRequest", function(request, result){
-		// 	var accessToken = request.fields.accessToken;
-		// 	var _id = request.fields._id;
-		// 	var user_id = request.fields.user_id;
-		// 	console.log(_id);
-		// 	database.collection("mentors").findOne({
-		// 		"accessToken": accessToken
-		// 	}, function (error, user) {
-		// 		if (user == null) {
-		// 			result.json({
-		// 				"status": "error",
-		// 				"message": "User has been logged out. Please login again."
-		// 			});
-		// 		} else {
-		// 			var me=user;
-		// 			database.collection("projects").findOne({
-		// 				"_id": ObjectId(_id)
-		// 			},function(error, user){
-		// 				console.log(user);
-		// 				console.log(me);
-		// 				if (user == null) {
-		// 					result.json({
-		// 						"status": "error",
-		// 						"message": "Project does not exist."
-		// 					});
-		// 				}else{
-		// 					database.collection("projects").updateOne({
-		// 						"_id": ObjectId(_id)
-		// 					}, {
-		// 						$push: {
-		// 							"mentees": {
-		// 								"_id": me._id,
-		// 								"name": me.name,
-		// 								"profileImage": me.profileImage,
-		// 								"status": "Pending",
-		// 								"sentByMe": false,
-		// 								"inbox": []
-		// 							}
-		// 						}
-		// 					}, function (error, data){
-		// 						result.json({
-		// 							"status": "success",
-		// 							"message": "Mentee request has been sent."
-		// 						});
-		// 					});
-							
-		// 				}
-		// 			})
-		// 		}
-		// 	});
-
-		// });
 
 		app.post("/addMenteeRequest", function(request, result){
 			var accessToken = request.fields.accessToken;

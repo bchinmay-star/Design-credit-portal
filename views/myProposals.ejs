@@ -1,0 +1,150 @@
+<%- include ("includes/studentHeader") %>
+
+<section>
+	<div class="gap blue-bg">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row" id="page-contents">
+
+						<div class="col-md-3">
+
+						</div>
+
+						<div class="col-md-6">
+
+							<div class="loadMore" id="myProposalsFeed">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+    var isMyProposalsPage = true;
+
+    function showmyproposalsfeed() {
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/getmyproposalsfeed", true);
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+
+				var response = JSON.parse(this.responseText);
+
+				var html = "";
+				html+= '<h2 class="">';
+				html += "My proposals";
+				html+= "</h2>";
+				html += '<hr>';
+				html += '<div class="central-meta item">';
+				for (var a = 0; a < response.data.length; a++) {
+					var data = response.data[a];
+                    if(data.user._id==window.user._id){
+                        html += '<div class="central-meta item">';
+                            html += '<div class="user-project">';
+                                html += '<div class="project-info">';
+
+                                    // html += '<figure>';
+                                    // 	html += '<img src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
+                                    // html += '</figure>';
+
+                                    html += '<div class="title colortxtblack">';
+                                            html += '<h2>';
+                                                html += data.title;
+                                            html += '</h2>';
+                                    html += '</div>';
+                                    html+='<hr>';
+
+                                    html += '<div class="user-name colortxtblack">';
+                                        html += '<span>Added by: ';
+                                        // html += '<ins >';
+                                                // html += '<a href="/user/' + data.user._id + '">';
+                                                    html += data.user.name;
+                                                // html += '</a>';
+                                        // html += '</ins>';
+                                        html+= '</span>';
+                                    html += '</div>';
+
+                                    html += '<div class="project-date colortxtblack">';
+                                        var createdAt = new Date(data.createdAt);
+                                        var date = createdAt.getDate() + "";
+                                        date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+
+                                        html += '<span>Floated on: ' + date + '</span>';
+                                    html += '</div>';
+                                    html+='<br>';
+
+                                    html += '<div class="project-meta colortxtblack">';
+                                        
+                                        html += '<div>';
+                                            html+= 'Description';
+                                        
+                                        
+                                            html += '<div class="description">';
+                                                html += '<p>';
+                                                    html += data.description;
+                                                html += '</p>';
+                                            html += '</div>';
+
+                                        html += '</div>';
+
+                                        html += '<div>';
+                                            html+= 'Skills required';
+                                        
+                                            html += '<div class="skills">';
+                                                html += '<p>';
+                                                    html += data.skills;
+                                                html += '</p>';
+                                            html += '</div>';
+                                        html += '</div>';
+                                        html+='<hr>';
+
+                                        // html+=createLikesSection(data);
+                                        html+=createCommentsSection(data);
+
+                                        // if (data.status == "pending") {
+                                        // 	var isMentee = false;
+                                        // 	for (var b=0;b<data.mentees.length;b++){
+                                        // 		var tempData=data.mentees[b];
+                                        // 		if(tempData._id == window.user._id){
+                                        // 			isMentee=true;
+                                        // 			break;
+                                        // 		}
+                                        // 	}
+
+                                        // 	html += '<div>';
+                                        // 	if(!isMentee && data.user._id!=window.user._id){
+                                                
+                                        // 			html+='<form>'
+                                        // 				html+='<button type="submit" class="show-interest-btn" user-id="'+ window.user._id +'" data-id="' + data._id + '" onclick="addMenteeRequest(this);" class="btn add mentee">Show interest</button>'
+                                        // 			html+='</form>'
+                                                
+                                        // 	}
+                                        // 	html += '</div>';
+                                        // }
+                                    html += '</div>';
+                                html += '</div>';
+                            html += '</div>';
+                        html += '</div>';
+                    }
+					
+				}
+				html += '</div>';
+				document.getElementById("myProposalsFeed").innerHTML = html;
+			}
+		};
+
+
+
+		var formData = new FormData();
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		ajax.send(formData);
+	}
+</script>
+
+<%- include ("includes/studentFooter") %>

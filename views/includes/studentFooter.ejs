@@ -36,6 +36,11 @@
                         showprojectsfeedstudent();
                     }
 
+                    if (typeof isMyProposalsPage !== "undefined" && isMyProposalsPage) {
+                        // showAddproject();
+                        showmyproposalsfeed();
+                    }
+
                     if (typeof isAddProjectPageStudent !== "undefined" && isAddProjectPageStudent) {
                         showAddprojectStudent();
                         // showprojectsfeed();

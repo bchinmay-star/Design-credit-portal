@@ -58,13 +58,15 @@ function getUserMentor() {
                     }
 
                     if (typeof isAllProjectsPage !== "undefined" && isAllProjectsPage) {
-                        // showAddproject();
                         showprojectsfeed();
+                    }
+
+                    if (typeof isStudentProposalsPage !== "undefined" && isStudentProposalsPage) {
+                        showstudentproposalsfeed();
                     }
 
                     if (typeof isAddProjectPage !== "undefined" && isAddProjectPage) {
                         showAddproject();
-                        // showprojectsfeed();
                     }
 
                     if (typeof isMyProjects !== "undefined" && isMyProjects) {
