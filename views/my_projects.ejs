@@ -48,7 +48,7 @@
                 for (var a = 0; a < response.data.length; a++) {
                     var data = response.data[a];
 
-                    if (data.status == "completed") {
+                    if (data.status == "accepted") {
                         html += '<div class="central-meta item">';
                             html += '<div class="user-project">';
                                 html += '<div class="project-info">';
@@ -105,6 +105,25 @@
                                                 html += '</p>';
                                             html += '</div>';
                                         html += '</div>';
+
+                                        html += '<div>';
+                                            html+= 'Mentees';
+                                            // html+='<hr>';
+
+                                            html += '<div class="selected-mentees">';
+                                                for (var b = 0; b < data.mentees.length; b++){
+                                                    var mentee = data.mentees[b];
+                                                    if(mentee.status=="accepted"){
+                                                        html += '<div>';
+                                                            html += mentee.name;
+                                                        html += '</div>';
+                                                    }
+                                                }
+                                                
+                                            html += '</div>';
+                                            html += '</div>';
+                                        html += '</div>';
+
                                         // html+=createLikesSection(data);
                                         html+=createCommentsSection(data);
 
@@ -203,11 +222,50 @@
                                             html += '</div>';
                                         html += '</div>';
                                         html+='<hr>';
+
+                                        html += '<div>';
+                                            html+= 'Selected applicants';
+                                            // html+='<hr>';
+
+                                            html += '<div class="selected-applicants">';
+                                                for (var b = 0; b < data.mentees.length; b++){
+                                                    var mentee = data.mentees[b];
+                                                    if(mentee.status=="accepted"){
+                                                        html += '<div>';
+                                                            html += mentee.name;
+                                                        html += '</div>';
+                                                    }
+                                                }
+                                                
+                                            html += '</div>';
+                                            html += '</div>';
+                                        html += '</div>';
+                                        html+='<hr>';
+
+                                        html += '<div>';
+                                            html+= 'Pending applicants';
+                                        
+                                            html += '<div class="pending-applicants">';
+                                                for (var b = 0; b < data.mentees.length; b++){
+                                                    var mentee = data.mentees[b];
+                                                    if(mentee.status=="pending"){
+                                                        html += '<div class="accept-mentee">';
+                                                            html += mentee.name;
+                                                            html +='<form style="display: inline-block; float: right;">'
+                                                                html+='<button type="submit" class="accept-mentee-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" mentee-id="' + mentee._id + '" onclick="acceptMentee(this);" class="btn accept mentee">Accept</button>'
+                                                            html +='</form>'
+                                                        html += '</div>';
+                                                    }
+                                                }
+                                            html += '</div>';
+                                        html += '</div>';
+                                        html+='<hr>';
+
                                         // html+=createLikesSection(data);
                                         html+=createCommentsSection(data);
 
                                         html+='<form>'
-											html+='<button type="submit" class="show-interest-btn" user-id="'+ window.user._id +'" data-id="' + data._id + '" onclick="acceptRequest(this);" class="btn add mentee">Accept request</button>'
+											html+='<button type="submit" class="mark-complete-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="markAsComplete(this);" class="btn mark complete">Mark as complete</button>'
 										html+='</form>'
 
                                     html += '</div>';
@@ -228,11 +286,12 @@
         ajax.send(formData);
     }
 
-    function acceptRequest(self){
-		var _id = self.getAttribute("data-id");
-		var user_id = self.getAttribute("user-id");
+    function acceptMentee(self){
+		var project_id = self.getAttribute("project-id");
+		var mentor_id = self.getAttribute("mentor-id");
+        var mentee_id = self.getAttribute("mentee-id");
 		var ajax = new XMLHttpRequest();
-		ajax.open("POST", "/acceptRequest", true);
+		ajax.open("POST", "/acceptMentee", true);
 
 		ajax.onreadystatechange = function() {
 			if (this.readyState ==4 && this.status == 200){
@@ -244,10 +303,34 @@
 
 		var formData = new FormData();
 		formData.append("accessToken", localStorage.getItem("accessToken"));
-		formData.append("_id", _id);
-		formData.append("user_id", user_id);
+		formData.append("project_id", project_id);
+		formData.append("mentor_id", mentor_id);
+        formData.append("mentee_id", mentee_id);
 		ajax.send(formData);
 	}
+
+    function markAsComplete(self){
+		var project_id = self.getAttribute("project-id");
+		var mentor_id = self.getAttribute("mentor-id");
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/markAsComplete", true);
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState ==4 && this.status == 200){
+				var response = JSON.parse(this.responseText);
+				alert(response.message);
+				self.remove();
+			}
+		};
+
+		var formData = new FormData();
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		formData.append("project_id", project_id);
+		formData.append("mentor_id", mentor_id);
+		ajax.send(formData);
+	}
+
+
 
     
 </script>

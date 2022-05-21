@@ -1261,12 +1261,66 @@ http.listen(3000, function () {
 			});
 		});
 
+		// app.post("/addMenteeRequest", function(request, result){
+		// 	var accessToken = request.fields.accessToken;
+		// 	var _id = request.fields._id;
+		// 	var user_id = request.fields.user_id;
+		// 	console.log(_id);
+		// 	database.collection("mentors").findOne({
+		// 		"accessToken": accessToken
+		// 	}, function (error, user) {
+		// 		if (user == null) {
+		// 			result.json({
+		// 				"status": "error",
+		// 				"message": "User has been logged out. Please login again."
+		// 			});
+		// 		} else {
+		// 			var me=user;
+		// 			database.collection("projects").findOne({
+		// 				"_id": ObjectId(_id)
+		// 			},function(error, user){
+		// 				console.log(user);
+		// 				console.log(me);
+		// 				if (user == null) {
+		// 					result.json({
+		// 						"status": "error",
+		// 						"message": "Project does not exist."
+		// 					});
+		// 				}else{
+		// 					database.collection("projects").updateOne({
+		// 						"_id": ObjectId(_id)
+		// 					}, {
+		// 						$push: {
+		// 							"mentees": {
+		// 								"_id": me._id,
+		// 								"name": me.name,
+		// 								"profileImage": me.profileImage,
+		// 								"status": "Pending",
+		// 								"sentByMe": false,
+		// 								"inbox": []
+		// 							}
+		// 						}
+		// 					}, function (error, data){
+		// 						result.json({
+		// 							"status": "success",
+		// 							"message": "Mentee request has been sent."
+		// 						});
+		// 					});
+							
+		// 				}
+		// 			})
+		// 		}
+		// 	});
+
+		// });
+
 		app.post("/addMenteeRequest", function(request, result){
 			var accessToken = request.fields.accessToken;
-			var _id = request.fields._id;
-			var user_id = request.fields.user_id;
-			console.log(_id);
-			database.collection("mentors").findOne({
+			var mentee_id = request.fields.mentee_id;
+			var project_id = request.fields.project_id;
+			var mentor_id = request.fields.mentor_id;
+
+			database.collection("students").findOne({
 				"accessToken": accessToken
 			}, function (error, user) {
 				if (user == null) {
@@ -1274,32 +1328,32 @@ http.listen(3000, function () {
 						"status": "error",
 						"message": "User has been logged out. Please login again."
 					});
+
 				} else {
 					var me=user;
 					database.collection("projects").findOne({
-						"_id": ObjectId(_id)
+						"_id": ObjectId(project_id)
 					},function(error, user){
-						console.log(user);
-						console.log(me);
 						if (user == null) {
 							result.json({
 								"status": "error",
 								"message": "Project does not exist."
-							});
+							});		
+
 						}else{
 							database.collection("projects").updateOne({
-								"_id": ObjectId(_id)
+								"_id": ObjectId(project_id)
 							}, {
 								$push: {
 									"mentees": {
 										"_id": me._id,
 										"name": me.name,
 										"profileImage": me.profileImage,
-										"status": "Pending",
+										"status": "pending",
 										"sentByMe": false,
 										"inbox": []
 									}
-								}
+								}		
 							}, function (error, data){
 								result.json({
 									"status": "success",
@@ -1312,12 +1366,12 @@ http.listen(3000, function () {
 				}
 			});
 
-		});
+		});	
 
-		app.post("/acceptRequest", function(request, result){
+		app.post("/markAsComplete", function(request, result){
 			var accessToken = request.fields.accessToken;
-			var _id = request.fields._id;
-			var user_id = request.fields.user_id;
+			var project_id = request.fields.project_id;
+			var mentor_id = request.fields.mentor_id;
 			// console.log(_id);
 			database.collection("mentors").findOne({
 				"accessToken": accessToken
@@ -1330,7 +1384,7 @@ http.listen(3000, function () {
 				} else {
 					var me=user;
 					database.collection("projects").findOne({
-						"_id": ObjectId(_id)
+						"_id": ObjectId(project_id)
 					},function(error, user){
 						// console.log(user);
 						// console.log(me);
@@ -1341,48 +1395,18 @@ http.listen(3000, function () {
 							});
 						}else{
 							database.collection("projects").updateOne({
-								"_id": ObjectId(_id)
+								"_id": ObjectId(project_id)
 							}, {
 								$set: {
-									// "mentees": {
-									// 	"_id": me._id,
-									// 	"name": me.name,
-									// 	"profileImage": me.profileImage,
-									// 	"status": "completed",
-									// 	"sentByMe": false,
-									// 	"inbox": []
-									// },
-									"status": "completed"
+									"status": "accepted"
 								}
 							}, function (error, data){
 								// console.log(_id);
 								result.json({
 									"status": "success",
-									"message": "Mentee request has been sent."
+									"message": "Project has been marked as complete."
 								});
 							});
-							// , function(error, data){
-							// 	database.collection("projects").updateOne({
-							// 		"_id": me._id
-							// 	}, {
-							// 		// $push: {
-							// 		// 	"friends": {
-							// 		// 		"_id": user._id,
-							// 		// 		"name": user.name,
-							// 		// 		"profileImage": user.profileImage,
-							// 		// 		"status": "Pending",
-							// 		// 		"sentByMe": false,
-							// 		// 		"inbox": []
-							// 		// 	}
-							// 		// }
-							// 	}, function (error, data){
-							// 		result.json({
-							// 			"status": "success",
-							// 			"message": "Mentee request has been sent."
-							// 		});
-							// 	});
-							// }
-							// );
 						}
 					})
 				}
@@ -1390,7 +1414,49 @@ http.listen(3000, function () {
 
 		});
 
-		
+		app.post("/acceptMentee", function(request, result){
+			var accessToken = request.fields.accessToken;
+			var project_id = request.fields.project_id;
+			var mentor_id = request.fields.mentor_id;
+			var mentee_id = request.fields.mentee_id;
 
-    });
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+					var me=user;
+					database.collection("projects").findOne({
+						"_id": ObjectId(project_id)
+					},function(error, user){
+					if (user == null) {
+						result.json({
+						"status": "error",
+						"message": "Project does not exist."
+					});
+				}else{
+					database.collection("projects").updateOne({
+					"_id": ObjectId(project_id),
+					"mentees._id": ObjectId(mentee_id)
+				}, {
+					$set:{
+						"mentees.$.status":"accepted"
+					}, function (error, data){
+						result.json({
+						"status": "success",
+						"message": "Mentee request has been accepted."
+						});
+							}
+						});
+					}
+				});
+			}
+			});
+		});
+	});
+
 });
