@@ -590,7 +590,7 @@ http.listen(3000, function () {
 			});
 		});
 
-		app.post("/updateProfileStudent", function (request, result) {
+		app.post("/studentUpdateProfile", function (request, result) {
 			var accessToken = request.fields.accessToken;
 			var name = request.fields.name;
 			// var dob = request.fields.dob;
