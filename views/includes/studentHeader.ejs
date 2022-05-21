@@ -27,6 +27,282 @@
 
         <script>
 			var mainURL = "http://localhost:3000";
+
+			var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+
+			function createLikesSection(data) {
+
+				var isLiked = false;
+				for (var b = 0; b < data.likers.length; b++) {
+					var liker = data.likers[b];
+					if (liker._id == window.user._id) {
+						isLiked = true;
+						break;
+					}
+				}
+
+				var html = "";
+
+				html += '<div class="we-video-info">';
+					html += '<ul>';
+
+						html += '<li>';
+
+							var className = "";
+							if (isLiked) {
+								className = "like";
+							} else {
+								className = "none";
+							}
+
+							html += '<span class="' + className + '" onclick="toggleLikePost(this);" data-id="' + data._id + '">';
+								html += '<i class="ti-thumb-up"></i>';
+								html += '<ins>' + data.likers.length + '</ins>';
+							html += '</span>';
+
+						html += '</li>';
+
+						html += '<li>';
+							html += '<span class="comment" title="Comments">';
+								html += '<i class="fa fa-comments-o"></i>';
+								html += '<ins id="count-post-comments-' + data._id + '">' + data.comments.length + '</ins>';
+							html += '</span>';
+						html += '</li>';
+
+						// html += '<li>';
+						// 	html += '<span class="share" onclick="sharePost(this);" data-id="' + data._id + '">';
+						// 		html += '<i class="ti-share"></i>';
+						// 		html += '<ins>' + data.shares.length + '</ins>';
+						// 	html += '</span>';
+						// html += '</li>';
+
+					html += '</ul>';
+				html += '</div>';
+
+				return html;
+			}
+
+			function toggleLikePost(self) {
+				var _id = self.getAttribute("data-id");
+
+				var ajax = new XMLHttpRequest();
+				ajax.open("POST", "/toggleLikeproject", true);
+
+				ajax.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+
+						var response = JSON.parse(this.responseText);
+
+						if (response.status == "success") {
+							self.className = "like";
+
+							var likes = parseInt(self.querySelector("ins").innerHTML);
+							likes++;
+							self.querySelector("ins").innerHTML = likes;
+						}
+						if (response.status == "unliked") {
+							self.className = "none";
+
+							var likes = parseInt(self.querySelector("ins").innerHTML);
+							likes--;
+							self.querySelector("ins").innerHTML = likes;
+						}
+						if (response.status == "error") {
+							alert(response.message);
+						}
+					}
+				};
+
+				var formData = new FormData();
+				formData.append("accessToken", localStorage.getItem("accessToken"));
+				formData.append("_id", _id);
+				ajax.send(formData);
+			}
+
+			function createCommentsSection(data) {
+				var html = "";
+
+				html += '<div class="coment-area">';
+					html += '<ul class="we-comet" style="max-height: 300px; overflow-y: scroll;">';
+
+					data.comments = data.comments.reverse();
+					for (var b = 0; b < data.comments.length; b++) {
+						var comment = data.comments[b];
+
+						html += '<li>';
+
+							// Show avatar in comment 
+
+							// html += '<div class="comet-avatar">';
+							// 	html += '<img src="' + mainURL + '/' + comment.user.profileImage + '">';
+							// html += '</div>';
+
+							html += '<div class="we-comment">';
+								html += '<div class="coment-head">';
+									html += '<h5><a href="/">' + comment.user.name + '</a></h5>';
+
+									var createdAt = new Date(comment.createdAt);
+									var date = createdAt.getDate() + "";
+									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+
+									html += '<span>' + date + '</span>';
+									html += '<a class="we-reply" href="javascript:void(0);" data-post-id="' + data._id + '" data-comment-id="' + comment._id + '" onclick="prepareToReply(this);" title="Reply"><i class="fa fa-reply"></i></a>';
+								html += '</div>';
+
+								html += '<p>' + comment.comment + '</p>';
+							html += '</div>';
+
+							html += '<ul>';
+
+								comment.replies = comment.replies.reverse();
+
+								for (var c = 0; c < comment.replies.length; c++) {
+									var reply = comment.replies[c];
+
+									html += '<li>';
+										// html += '<div class="comet-avatar">';
+										// 	html += '<img src="' + mainURL + '/' + reply.user.profileImage + '">';
+										// html += '</div>';
+
+										html += '<div class="we-comment">';
+											html += '<div class="coment-head">';
+												html += '<h5><a href="/">' + reply.user.name + '</a></h5>';
+
+												var createdAt = new Date(reply.createdAt);
+												var date = createdAt.getDate() + "";
+												date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+
+												html += '<span>' + date + '</span>';
+											html += '</div>';
+											html += '<p>' + reply.reply + '</p>';
+										html += '</div>';
+									html += '</li>';
+								}
+								html += '</ul>';
+
+						html += '</li>';
+					}
+					html += '</ul>';
+
+					html += '<ul class="we-comet">';
+						html += '<li class="post-comment">';
+							// html += '<div class="comet-avatar">';
+							// 	html += '<img src="' + mainURL + '/' + window.user.profileImage + '">';
+							// html += '</div>';
+							html += '<div class="post-comt-box">';
+								html += '<form method="post" onsubmit="return doPostComment(this);">';
+									html += '<input type="hidden" name="_id" value="' + data._id + '">';
+									html += '<textarea name="comment" placeholder="Ask queries"></textarea>';
+									html += '<button type="submit">Post</button>';
+								html += '</form>';
+							html += '</div>';
+						html += '</li>';
+					html += '</ul>';
+
+				html += '</div>';
+
+				return html;
+			}
+
+			function doPostComment(form) {
+
+				var ajax = new XMLHttpRequest();
+				ajax.open("POST", "/postComment", true);
+
+				ajax.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+
+						var response = JSON.parse(this.responseText);
+						alert(response.message);
+
+						if (response.status == "success") {
+							form.comment.value = "";
+
+							// var commentsHtml = createCommentsSection(response.updatePost);
+							// document.getElementById("post-comments-" + form._id.value).innerHTML = commentsHtml;
+
+							// var comments = parseInt(document.getElementById("count-post-comments-" + form._id.value).innerHTML);
+							// comments++;
+							// document.getElementById("count-post-comments-" + form._id.value).innerHTML = comments;
+						}
+					}
+				};
+
+				var formData = new FormData(form);
+				formData.append("accessToken", localStorage.getItem("accessToken"));
+				ajax.send(formData);
+
+				return false;
+			}
+
+			function prepareToReply(self) {
+				$("#replyModal input[name='postId']").val(self.getAttribute("data-post-id"));
+				$("#replyModal input[name='commentId']").val(self.getAttribute("data-comment-id"));
+				$("#replyModal").modal("show");
+			}
+
+			function doPostReply(form) {
+				var ajax = new XMLHttpRequest();
+				ajax.open("POST", "/postReply", true);
+
+				ajax.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+
+						var response = JSON.parse(this.responseText);
+						alert(response.message);
+
+						if (response.status == "success") {
+							form.reply.value = "";
+							$("#replyModal").modal("hide");
+
+							// var commentsHtml = createCommentsSection(response.updatePost);
+							// document.getElementById("post-comments-" + form.postId.value).innerHTML = commentsHtml;
+						}
+					}
+				};
+
+				var formData = new FormData(form);
+				formData.append("accessToken", localStorage.getItem("accessToken"));
+				ajax.send(formData);
+
+				return false;
+			}
+
+			function showAddprojectStudent() {
+				if (localStorage.getItem("accessToken")) {
+					var html = "";
+
+					html += '<div class="central-meta">';
+						html += '<div class="new-projectbox">';
+							html += "Add new project";
+							html += '<hr>';
+							html += '<div class="newpst-input">';
+								html += '<form method="post" id="form-add-project" onsubmit="return addNewProjectStudent(this);">';
+									html += "Project title";
+									html += '<hr>';
+									html += '<input name="type" type="hidden" value="post">';
+									html += '<textarea rows="2" name="title" placeholder="Add project title"></textarea>';
+									html += '<hr>';
+									html += "Project description";
+									html += '<hr>';
+									html += '<input name="type" type="hidden" value="post">';
+									html += '<textarea rows="6" name="description" placeholder="Add project description"></textarea>';
+									html += '<hr>';
+									html += "Skills required";
+									html += '<hr>';
+									html += '<input name="type" type="hidden" value="post">';
+									html += '<textarea rows="2" name="skills" placeholder="Add the required skills"></textarea>';
+									html += '<br>';
+									html += '<hr>';
+									html += '<button type="submit">Submit</button>';
+								html += '</form>';
+							html += '</div>';
+						html += '</div>';
+					html += '</div>';
+					document.getElementById("add-project-box").innerHTML = html;
+				}
+			}
         </script>
 
 <style>

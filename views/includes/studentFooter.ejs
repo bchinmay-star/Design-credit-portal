@@ -30,6 +30,17 @@
                     if (typeof isUpdateProfile !== "undefined" && isUpdateProfile) {
                         showProfileData();
                     }
+
+                    if (typeof isAllProjectsStudentPage !== "undefined" && isAllProjectsStudentPage) {
+                        // showAddproject();
+                        showprojectsfeedstudent();
+                    }
+
+                    if (typeof isAddProjectPageStudent !== "undefined" && isAddProjectPageStudent) {
+                        showAddprojectStudent();
+                        // showprojectsfeed();
+                    }
+                    
                 } else {
                     localStorage.removeItem("accessToken");
                 }
@@ -50,7 +61,7 @@ function showMainMenu() {
 
     if (localStorage.getItem("accessToken")) {
         html += '<li>';
-            html += '<a href="/studentAllProjects">All projects</a> ';
+            html += '<a href="/allProjectsStudent">All projects</a> ';
         html += '</li>';
 
         html += '<li>';
