@@ -20,15 +20,15 @@
 									</h5>
 
 									
-                                    <div class="loadMore" id="grading"></div>
+                                    <div class="loadMore" id="grading" style="color:black;"></div>
                                         
 
                                     <br>
 
-										<button type="submit" class="mtr-btn" name="submit">
+										<!-- <button type="submit" class="mtr-btn" name="submit">
 											<span>Update</span>
 										</button>
-									</form>
+									</form> -->
 								</div>
 							</div>
 						</div>
@@ -57,7 +57,7 @@
                 html+="<table>";
 
                 html+="<tr>";
-                html+="<th>Project Title</th>";
+                html+="<th >Project Title</th>";
                 html+="<th>Name of students</th>";
                 html+="<th>Grade</th>";
                 html+="</tr>";
@@ -75,15 +75,31 @@
 
                         html+= "<td>"; 
                         for(var i=0; i<data.mentees.length; i++){
-                            html += data.mentees[i].name;
-                            if(i != data.mentees.length-1){
-                                html += "<br>";
+                            if(data.mentees[i].status=="accepted"){
+                                html += data.mentees[i].name;
+                                if(i != data.mentees.length-1){
+                                    html += "<br>";
+                                }
                             }
+                            
                         }
                         html+= "</td>";
 
                         html+= "<td>";
-                        html += data.grade;
+                        
+                        if(data.grade=="Z"){
+                            html +='<form>'
+                                html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-S-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToS(this);" class="btn update grade S">Update to S</button>'
+                            html +='</form>'
+                            html +='<form>'
+                                html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-U-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToU(this);" class="btn update grade U">Update to U</button>'
+                            html +='</form>'
+							html +='<form>'
+                                html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-X-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToX(this);" class="btn update grade X">Update to X</button>'
+                            html +='</form>'
+                        }else{
+							html += data.grade;
+						}
                         html+= "</td>";
 
                         html+= "</tr>";
@@ -98,6 +114,69 @@
 		formData.append("accessToken", localStorage.getItem("accessToken"));
 		ajax.send(formData);
     }
+
+    function updateGradeToS(self){
+		var project_id = self.getAttribute("project-id");
+		var mentor_id = self.getAttribute("mentor-id");
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/updateGradeToS", true);
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState ==4 && this.status == 200){
+				var response = JSON.parse(this.responseText);
+				alert(response.message);
+				self.remove();
+			}
+		};
+
+		var formData = new FormData();
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		formData.append("project_id", project_id);
+		formData.append("mentor_id", mentor_id);
+		ajax.send(formData);
+	}
+
+    function updateGradeToU(self){
+		var project_id = self.getAttribute("project-id");
+		var mentor_id = self.getAttribute("mentor-id");
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/updateGradeToU", true);
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState ==4 && this.status == 200){
+				var response = JSON.parse(this.responseText);
+				alert(response.message);
+				self.remove();
+			}
+		};
+
+		var formData = new FormData();
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		formData.append("project_id", project_id);
+		formData.append("mentor_id", mentor_id);
+		ajax.send(formData);
+	}
+
+	function updateGradeToX(self){
+		var project_id = self.getAttribute("project-id");
+		var mentor_id = self.getAttribute("mentor-id");
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/updateGradeToX", true);
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState ==4 && this.status == 200){
+				var response = JSON.parse(this.responseText);
+				alert(response.message);
+				self.remove();
+			}
+		};
+
+		var formData = new FormData();
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		formData.append("project_id", project_id);
+		formData.append("mentor_id", mentor_id);
+		ajax.send(formData);
+	}
 </script>
 
 <%- include ("includes/footer") %>

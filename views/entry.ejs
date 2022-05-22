@@ -6,34 +6,43 @@
 	<link rel="stylesheet" href="/public/css/style.css">
 	<link rel="stylesheet" href="/public/css/color.css">
 	<link rel="stylesheet" href="/public/css/responsive.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
 </head>
 <body>
-    <div class="bkc" >
-        <img src="public\images\female.png" alt=""  width="400px">
-        <h2 class="log-title">Are you a mentor ?</h2>
-        <form onsubmit="return doRegisterMentor(this);">
-            <div class="submit-btns">
-                <button class="mtr-btn enter btnmodify" name="submit" type="submit">
-                    <span style="color:black">Enter</span>
-                </button>
-            </div>
-        </form>
+    <div style="font-family: 'Lato', sans-serif;">
+        <div style="overflow: hidden;">
+            
+            <img src="public\images\Logo_IITJ-1.png" style="float: left; position: relative; margin: 10px 15px 15px 20px;" width="80px">
+            <h2 style="float: right; margin: 30px 15px 15px;"> Design credit portal</h2>
+        </div>
+        
+        <div class="bkc" >
+            <img src="public\images\female.png" alt=""  width="400px">
+            <h2 class="log-title">Are you a mentor ?</h2>
+            <form onsubmit="return doRegisterMentor(this);">
+                <div class="submit-btns">
+                    <button class="mtr-btn enter btnmodify" style="background-color: white; color: #000;" name="submit" type="submit">
+                        Enter
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="bkc2">
+            <img src="public\images\graduating-student.png" alt="" width="400px">
+            <h2>Are you a student ?</h2>
+            <form onsubmit="return doRegisterStudent(this);">
+                <div class="submit-btns">
+                    <button class="mtr-btn btnmodify" style="background-color: white; color: #000;" name="submit" type="submit">
+                        Enter
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="lineb"></div>
     </div>
-
-    <div class="bkc2">
-        <img src="public\images\graduating-student.png" alt="" width="400px">
-        <h2 class="log-title">Are you a student ?</h2>
-        <form onsubmit="return doRegisterStudent(this);">
-            <div class="submit-btns">
-                <button class="mtr-btn btnmodify" name="submit" type="submit">
-                    <span style="color:black">Enter</span>
-                </button>
-            </div>
-        </form>
-    </div>
-    <div class="lineb"></div>
-    
 	<script>
 		function doRegisterMentor(form) {
 			form.submit.setAttribute("disabled", "disabled");

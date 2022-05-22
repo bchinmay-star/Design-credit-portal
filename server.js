@@ -925,7 +925,7 @@ http.listen(3000, function () {
 						"likers": [],
 						"comments": [],
 						"shares": [],
-						"grade" : "X",
+						"grade" : "Z",
 						"user": {
 							"_id": user._id,
 							"name": user.name,
@@ -951,7 +951,7 @@ http.listen(3000, function () {
 									"likers": [],
 									"comments": [],
 									"shares": [],
-									"grade" : "X"
+									"grade" : "Z"
 								}
 							}
 						}, function (error, data) {
@@ -997,7 +997,7 @@ http.listen(3000, function () {
 						"likers": [],
 						"comments": [],
 						"shares": [],
-						"grade" : "X",
+						"grade" : "Z",
 						"user": {
 							"_id": user._id,
 							"name": user.name,
@@ -1023,7 +1023,7 @@ http.listen(3000, function () {
 									"likers": [],
 									"comments": [],
 									"shares": [],
-									"grade" : "X"
+									"grade" : "Z"
 								}
 							}
 						}, function (error, data) {
@@ -1277,6 +1277,118 @@ http.listen(3000, function () {
 			});
 		});
 
+		app.post("/postCommentStudent", function (request, result) {
+
+			var accessToken = request.fields.accessToken;
+			var _id = request.fields._id;
+			var comment = request.fields.comment;
+			var createdAt = new Date().getTime();
+
+			database.collection("students").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+
+					database.collection("projects").findOne({
+						"_id": ObjectId(_id)
+					}, function (error, post) {
+						if (post == null) {
+							result.json({
+								"status": "error",
+								"message": "Project does not exist."
+							});
+						} else {
+
+							var commentId = ObjectId();
+
+							database.collection("projects").updateOne({
+								"_id": ObjectId(_id)
+							}, {
+								$push: {
+									"comments": {
+										"_id": commentId,
+										"user": {
+											"_id": user._id,
+											"name": user.name,
+											"profileImage": user.profileImage,
+										},
+										"comment": comment,
+										"createdAt": createdAt,
+										"replies": []
+									}
+								}
+							}, function (error, data) {
+
+								if (user._id.toString() != post.user._id.toString()) {
+									database.collection("students").updateOne({
+										"_id": post.user._id
+									}, {
+										$push: {
+											"notifications": {
+												"_id": ObjectId(),
+												"type": "new_comment",
+												"content": user.name + " commented on your post.",
+												"profileImage": user.profileImage,
+												"post": {
+													"_id": post._id
+												},
+												"isRead": false,
+												"createdAt": new Date().getTime()
+											}
+										}
+									});
+								}
+
+								database.collection("students").updateOne({
+									$and: [{
+										"_id": post.user._id
+									}, {
+										"posts._id": post._id
+									}]
+								}, {
+									$push: {
+										"posts.$[].comments": {
+											"_id": commentId,
+											"user": {
+												"_id": user._id,
+												"name": user.name,
+												"profileImage": user.profileImage,
+											},
+											"comment": comment,
+											"createdAt": createdAt,
+											"replies": []
+										}
+									}
+								});
+
+								result.json({
+									"status": "success",
+									"message": "Comment has been posted."
+									// "updatePost": updatePost
+								});
+
+								// database.collection("projects").findOne({
+								// 	"_id": ObjectId(_id)
+								// }, function (error, updatePost) {
+								// 	result.json({
+								// 		"status": "success",
+								// 		"message": "Comment has been posted.",
+								// 		"updatePost": updatePost
+								// 	});
+								// });
+							});
+
+						}
+					});
+				}
+			});
+		});
+
 		app.post("/postReply", function (request, result) {
 
 			var accessToken = request.fields.accessToken;
@@ -1329,6 +1441,103 @@ http.listen(3000, function () {
 							}, function (error, data) {
 
 								database.collection("mentors").updateOne({
+									$and: [{
+										"_id": post.user._id
+									}, {
+										"projects._id": post._id
+									}, {
+										"projects.comments._id": ObjectId(commentId)
+									}]
+								}, {
+									$push: {
+										"projects.$[].comments.$[].replies": {
+											"_id": replyId,
+											"user": {
+												"_id": user._id,
+												"name": user.name,
+												"profileImage": user.profileImage,
+											},
+											"reply": reply,
+											"createdAt": createdAt
+										}
+									}
+								});
+
+								result.json({
+									"status": "success",
+									"message": "Reply has been posted."
+									// "updatePost": updatePost
+								});
+
+								// database.collection("projects").findOne({
+								// 	"_id": ObjectId(postId)
+								// }, function (error, updatePost) {
+								// 	result.json({
+								// 		"status": "success",
+								// 		"message": "Reply has been posted.",
+								// 		"updatePost": updatePost
+								// 	});
+								// });
+							});
+
+						}
+					});
+				}
+			});
+		});
+
+		app.post("/postReplyStudent", function (request, result) {
+
+			var accessToken = request.fields.accessToken;
+			var postId = request.fields.postId;
+			var commentId = request.fields.commentId;
+			var reply = request.fields.reply;
+			var createdAt = new Date().getTime();
+
+			database.collection("students").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+
+					database.collection("projects").findOne({
+						"_id": ObjectId(postId)
+					}, function (error, post) {
+						if (post == null) {
+							result.json({
+								"status": "error",
+								"message": "Project does not exist."
+							});
+						} else {
+
+							var replyId = ObjectId();
+
+							database.collection("projects").updateOne({
+								$and: [{
+									"_id": ObjectId(postId)
+								}, {
+									"comments._id": ObjectId(commentId)
+								}]
+							}, {
+								$push: {
+									"comments.$.replies": {
+										"_id": replyId,
+										"user": {
+											"_id": user._id,
+											"name": user.name,
+											"profileImage": user.profileImage,
+										},
+										"reply": reply,
+										"createdAt": createdAt
+									}
+								}
+							}, function (error, data) {
+
+								database.collection("students").updateOne({
 									$and: [{
 										"_id": post.user._id
 									}, {
@@ -1549,6 +1758,135 @@ http.listen(3000, function () {
 							"message": "Record has been fetched",
 							"data": data
 						});
+					});
+				}
+			});
+		});
+
+		app.post("/updateGradeToS", function(request, result){
+			var accessToken = request.fields.accessToken;
+			var project_id = request.fields.project_id;
+			var mentor_id = request.fields.mentor_id;
+
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+					var me=user;
+					database.collection("projects").findOne({
+						"_id": ObjectId(project_id)
+					},function(error, user){
+						if (user == null) {
+							result.json({
+							"status": "error",
+							"message": "Project does not exist."
+						});
+					}else{
+						database.collection("projects").updateOne({
+						"_id": ObjectId(project_id)
+						// "mentees._id": ObjectId(mentee_id)
+					}, {
+							$set:{
+								"grade":"S"
+							}, function (error, data){
+								result.json({
+									"status": "success",
+									"message": "Grade has been updated."
+								});
+							}
+						});
+						}
+					});
+				}
+			});
+		});
+
+		app.post("/updateGradeToU", function(request, result){
+			var accessToken = request.fields.accessToken;
+			var project_id = request.fields.project_id;
+			var mentor_id = request.fields.mentor_id;
+
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+					var me=user;
+					database.collection("projects").findOne({
+						"_id": ObjectId(project_id)
+					},function(error, user){
+						if (user == null) {
+							result.json({
+							"status": "error",
+							"message": "Project does not exist."
+						});
+					}else{
+						database.collection("projects").updateOne({
+						"_id": ObjectId(project_id)
+						// "mentees._id": ObjectId(mentee_id)
+					}, {
+							$set:{
+								"grade":"U"
+							}, function (error, data){
+								result.json({
+									"status": "success",
+									"message": "Grade has been updated."
+								});
+							}
+						});
+						}
+					});
+				}
+			});
+		});
+
+		app.post("/updateGradeToX", function(request, result){
+			var accessToken = request.fields.accessToken;
+			var project_id = request.fields.project_id;
+			var mentor_id = request.fields.mentor_id;
+
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+					var me=user;
+					database.collection("projects").findOne({
+						"_id": ObjectId(project_id)
+					},function(error, user){
+						if (user == null) {
+							result.json({
+							"status": "error",
+							"message": "Project does not exist."
+						});
+					}else{
+						database.collection("projects").updateOne({
+						"_id": ObjectId(project_id)
+						// "mentees._id": ObjectId(mentee_id)
+					}, {
+							$set:{
+								"grade":"X"
+							}, function (error, data){
+								result.json({
+									"status": "success",
+									"message": "Grade has been updated."
+								});
+							}
+						});
+						}
 					});
 				}
 			});

@@ -6,6 +6,9 @@
 	<link rel="stylesheet" href="/public/css/style.css">
 	<link rel="stylesheet" href="/public/css/color.css">
 	<link rel="stylesheet" href="/public/css/responsive.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -13,11 +16,11 @@
 	<%
 		months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	%>
-	<div class="theme-layout">
+	<div class="theme-layout" style="font-family: 'Lato', sans-serif;">
 
 		<div class="topbar stick">
 			<div class="logo">
-				<h4>Mentor</h4>
+				<h4 >Mentor</h4>
 			</div>
 
 			<div class="top-area">
@@ -145,7 +148,7 @@
 				html += '<div class="coment-area">';
 					html += '<ul class="we-comet" style="max-height: 300px; overflow-y: scroll;">';
 
-					data.comments = data.comments.reverse();
+					// data.comments = data.comments.reverse();
 					for (var b = 0; b < data.comments.length; b++) {
 						var comment = data.comments[b];
 
@@ -156,17 +159,17 @@
 
 							html += '<div class="we-comment">';
 								html += '<div class="coment-head">';
-									html += '<h5><a href="/">' + comment.user.name + '</a></h5>';
+									html += '<h5 ><a href="/">' + comment.user.name + '</a></h5>';
 
 									var createdAt = new Date(comment.createdAt);
 									var date = createdAt.getDate() + "";
-									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear() + " " + createdAt.getHours() +":"+ createdAt.getMinutes()+":" + createdAt.getSeconds();
 
-									html += '<span>' + date + '</span>';
-									html += '<a class="we-reply" href="javascript:void(0);" data-post-id="' + data._id + '" data-comment-id="' + comment._id + '" onclick="prepareToReply(this);" title="Reply"><i class="fa fa-reply"></i></a>';
+									html += '<span >' + date + '</span>';
+									html += '<a class="we-reply"  href="javascript:void(0);" data-post-id="' + data._id + '" data-comment-id="' + comment._id + '" onclick="prepareToReply(this);" title="Reply"><i class="fa fa-reply"></i></a>';
 								html += '</div>';
 
-								html += '<p>' + comment.comment + '</p>';
+								html += '<p >' + comment.comment + '</p>';
 							html += '</div>';
 
 							html += '<ul>';
@@ -183,15 +186,15 @@
 
 										html += '<div class="we-comment">';
 											html += '<div class="coment-head">';
-												html += '<h5><a href="/">' + reply.user.name + '</a></h5>';
+												html += '<h5 ><a href="/">' + reply.user.name + '</a></h5>';
 
 												var createdAt = new Date(reply.createdAt);
 												var date = createdAt.getDate() + "";
-												date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+												date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear() + " " + createdAt.getHours() +":"+ createdAt.getMinutes()+":" + createdAt.getSeconds();
 
-												html += '<span>' + date + '</span>';
+												html += '<span >' + date + '</span>';
 											html += '</div>';
-											html += '<p>' + reply.reply + '</p>';
+											html += '<p >' + reply.reply + '</p>';
 										html += '</div>';
 									html += '</li>';
 								}
@@ -210,7 +213,7 @@
 								html += '<form method="post" onsubmit="return doPostComment(this);">';
 									html += '<input type="hidden" name="_id" value="' + data._id + '">';
 									html += '<textarea name="comment" placeholder="Post your comment"></textarea>';
-									html += '<button type="submit">Post</button>';
+									html += '<button class="mtr-btn" style="background-color: white; color: #000; border-radius: 14px;" type="submit">Post</button>';
 								html += '</form>';
 							html += '</div>';
 						html += '</li>';
@@ -310,7 +313,7 @@
 									html += '<input name="type" type="hidden" value="post">';
 									html += '<textarea rows="2" name="skills" placeholder="Add the required skills"></textarea>';
 									html += '<hr>';
-									html += '<button type="submit">Submit</button>';
+									html += '<button class="mtr-btn" style="border-radius: 14px;" type="submit">Submit</button>';
 								html += '</form>';
 							html += '</div>';
 						html += '</div>';

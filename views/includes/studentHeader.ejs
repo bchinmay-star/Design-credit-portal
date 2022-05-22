@@ -6,12 +6,15 @@
 	<link rel="stylesheet" href="/public/css/style.css">
 	<link rel="stylesheet" href="/public/css/color.css">
 	<link rel="stylesheet" href="/public/css/responsive.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+	
 </head>
 
 <body>
-    <div class="theme-layout">
+    <div class="theme-layout" style="font-family: 'Lato', sans-serif;">
 
-		<div class="topbar stick">
+		<div class="topbar stick" style="font-family: 'Lato', sans-serif;">
 			<div class="logo">
 				<h4>Student</h4>
 			</div>
@@ -120,13 +123,13 @@
 				ajax.send(formData);
 			}
 
-			function createCommentsSection(data) {
+			function createCommentsSectionStudent(data) {
 				var html = "";
 
 				html += '<div class="coment-area">';
 					html += '<ul class="we-comet" style="max-height: 300px; overflow-y: scroll;">';
 
-					data.comments = data.comments.reverse();
+					// data.comments = data.comments.reverse();
 					for (var b = 0; b < data.comments.length; b++) {
 						var comment = data.comments[b];
 
@@ -144,10 +147,10 @@
 
 									var createdAt = new Date(comment.createdAt);
 									var date = createdAt.getDate() + "";
-									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear() + " " + createdAt.getHours() +":"+ createdAt.getMinutes()+":" + createdAt.getSeconds();
 
 									html += '<span>' + date + '</span>';
-									html += '<a class="we-reply" href="javascript:void(0);" data-post-id="' + data._id + '" data-comment-id="' + comment._id + '" onclick="prepareToReply(this);" title="Reply"><i class="fa fa-reply"></i></a>';
+									html += '<a class="we-reply" href="javascript:void(0);" data-post-id="' + data._id + '" data-comment-id="' + comment._id + '" onclick="prepareToReplyStudent(this);" title="Reply"><i class="fa fa-reply"></i></a>';
 								html += '</div>';
 
 								html += '<p>' + comment.comment + '</p>';
@@ -171,7 +174,7 @@
 
 												var createdAt = new Date(reply.createdAt);
 												var date = createdAt.getDate() + "";
-												date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+												date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear() + " " + createdAt.getHours() +":"+ createdAt.getMinutes()+":" + createdAt.getSeconds();
 
 												html += '<span>' + date + '</span>';
 											html += '</div>';
@@ -191,10 +194,10 @@
 							// 	html += '<img src="' + mainURL + '/' + window.user.profileImage + '">';
 							// html += '</div>';
 							html += '<div class="post-comt-box">';
-								html += '<form method="post" onsubmit="return doPostComment(this);">';
+								html += '<form method="post" onsubmit="return doPostCommentStudent(this);">';
 									html += '<input type="hidden" name="_id" value="' + data._id + '">';
-									html += '<textarea name="comment" placeholder="Ask queries"></textarea>';
-									html += '<button type="submit">Post</button>';
+									html += '<textarea name="comment" placeholder="Post your comment"></textarea>';
+									html += '<button class="mtr-btn" style="background-color: white; color: #000; height: 30px; border-radius: 14px;" type="submit">Post</button>';
 								html += '</form>';
 							html += '</div>';
 						html += '</li>';
@@ -205,10 +208,10 @@
 				return html;
 			}
 
-			function doPostComment(form) {
+			function doPostCommentStudent(form) {
 
 				var ajax = new XMLHttpRequest();
-				ajax.open("POST", "/postComment", true);
+				ajax.open("POST", "/postCommentStudent", true);
 
 				ajax.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
@@ -236,15 +239,15 @@
 				return false;
 			}
 
-			function prepareToReply(self) {
+			function prepareToReplyStudent(self) {
 				$("#replyModal input[name='postId']").val(self.getAttribute("data-post-id"));
 				$("#replyModal input[name='commentId']").val(self.getAttribute("data-comment-id"));
 				$("#replyModal").modal("show");
 			}
 
-			function doPostReply(form) {
+			function doPostReplyStudent(form) {
 				var ajax = new XMLHttpRequest();
-				ajax.open("POST", "/postReply", true);
+				ajax.open("POST", "/postReplyStudent", true);
 
 				ajax.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
@@ -295,7 +298,7 @@
 									html += '<textarea rows="2" name="skills" placeholder="Add the required skills"></textarea>';
 									html += '<br>';
 									html += '<hr>';
-									html += '<button type="submit">Submit</button>';
+									html += '<button class="mtr-btn" style="background-color: white; color: #000; border-radius: 14px;" type="submit">Submit</button>';
 								html += '</form>';
 							html += '</div>';
 						html += '</div>';

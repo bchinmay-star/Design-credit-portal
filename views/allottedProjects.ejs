@@ -36,7 +36,7 @@
 				var response = JSON.parse(this.responseText);
 
 				var html = "";
-				html+= '<h2 class="">';
+				html+= '<h2 class="" style="color: white; font-weight: bold;">';
 				html += "Allotted projects";
 				html+= "</h2>";
 				html += '<hr>';
@@ -102,7 +102,7 @@
 													html+='<hr>';
 
 													// html+=createLikesSection(data);
-													html+=createCommentsSection(data);
+													html+=createCommentsSectionStudent(data);
 
 													// if (data.status == "pending") {
 													// 	var isMentee = false;

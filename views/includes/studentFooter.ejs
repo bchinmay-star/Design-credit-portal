@@ -1,10 +1,37 @@
 <footer>
-    <div class="container">
+    <div class="container" style="font-family: 'Lato', sans-serif; color:black;">
         <div class="row">
             Made with love by Gaurav and Chinmay &copy; <%= new Date().getFullYear() %>
         </div>
     </div>
 </footer>
+</div>
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+</head>
+
+<div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" style="font-family: 'Lato', sans-serif;">Reply</h5>
+				<button type="button" class="mtr-btn close" style="font-family: 'Lato', sans-serif; background-color: white; color: #000; border-radius: 14px;" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true" >&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body" style="font-family: 'Lato', sans-serif; background-color: white; color: #000;">
+				<form onsubmit="return doPostReplyStudent(this);">
+					<input type="hidden" name="postId">
+					<input type="hidden" name="commentId">
+					<textarea name="reply" placeholder="Post your reply"></textarea>
+					<button class="mtr-btn" style="font-family: 'Lato', sans-serif; background-color: white; color: #000; border-radius: 14px;" type="submit">Post</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script src="/public/js/jquery-3.3.1.min.js"></script>
@@ -70,31 +97,31 @@ function showMainMenu() {
 
     if (localStorage.getItem("accessToken")) {
         html += '<li>';
-            html += '<a href="/allProjectsStudent">All projects</a> ';
+            html += '<a href="/allProjectsStudent" style="font-family: "Lato", sans-serif;">All projects</a> ';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/allottedProjects">Allotted projects</a> ';
+            html += '<a href="/allottedProjects" style="font-family: "Lato", sans-serif;">Allotted projects</a> ';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/myProposals">My proposals</a> ';
+            html += '<a href="/myProposals" style="font-family: "Lato", sans-serif;">My proposals</a> ';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/studentUpdateProfile">Profile</a>';
+            html += '<a href="/studentUpdateProfile" style="font-family: "Lato", sans-serif;">Profile</a>';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/studentLogout" onclick="return doStudentLogout();">Logout</a>';
+            html += '<a href="/studentLogout" onclick="return doStudentLogout();" style="font-family: "Lato", sans-serif;">Logout</a>';
         html += '</li>';
     } else {
         html += '<li>';
-            html += '<a href="/stundentLogin">Login</a>';
+            html += '<a href="/stundentLogin" style="font-family: "Lato", sans-serif;">Login</a>';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/studentSignup">Signup</a>';
+            html += '<a href="/studentSignup" style="font-family: "Lato", sans-serif;">Signup</a>';
         html += '</li>';
     }
 

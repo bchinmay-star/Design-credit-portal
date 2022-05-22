@@ -108,10 +108,11 @@ img {
 .bkc{
     padding-top: 7%;
     text-align: center;
-    background-color: #9fc5f8;
+    background-color: #5680e9;
     width: 50%;
     height: 100%;
     float: left;
+    color: white;
     /* margin-right: 5px; */
 }
 
@@ -143,6 +144,7 @@ img {
     background-color: white;
     color: #000;
     height: 40px;
+    border-radius: 14px;
 }
 
 .tryhard{
@@ -152,7 +154,8 @@ img {
 .bkc2{
     padding-top: 7%;
     text-align: center;
-    background-color: #b6d7a8;
+    background-color: #5cdb95;
+    color: white;
     width: 50%;
     height: 100%;
     float:left;
@@ -164,13 +167,14 @@ img {
 .green-bg{
     float: left;
     width: 100%;
-    background-color: #b6d7a8;
+    /* background-color: #b6d7a8; */
+    background-color: #5cdb95;
 }
 
 .blue-bg{
     float: left;
     width: 100%;
-    background-color: #9fc5f8;
+    background-color: #5680e9;
     /* background-color: #a2c4f3; */
 }
 
@@ -1483,29 +1487,6 @@ form button {
 .post-meta > img {
     float: left;
     width: 100%;
-}
-
-.description {
-    float: left;
-    margin-top: 12px;
-    width: 100%;
-}
-
-.description > p {
-    margin-bottom: 20px;
-}
-
-.description > span {
-    color: #2a2a2a;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 28px;
-    display: inline-block;
-    margin-bottom: 5px;
-}
-
-.description > p a {
-    font-weight: 600;
 }
 
 

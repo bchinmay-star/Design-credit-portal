@@ -37,7 +37,7 @@
 				var response = JSON.parse(this.responseText);
 
 				var html = "";
-				html+= '<h2 class="">';
+				html+= '<h2 class="" style="color: white; font-weight: bold;">';
 				html += "My proposals";
 				html+= "</h2>";
 				html += '<hr>';
@@ -85,7 +85,7 @@
                                             html+= 'Description';
                                         
                                         
-                                            html += '<div class="description">';
+                                            html += '<div>';
                                                 html += '<p>';
                                                     html += data.description;
                                                 html += '</p>';
@@ -102,10 +102,10 @@
                                                 html += '</p>';
                                             html += '</div>';
                                         html += '</div>';
-                                        html+='<hr>';
+                                        // html+='<hr>';
 
                                         // html+=createLikesSection(data);
-                                        html+=createCommentsSection(data);
+                                        // html+=createCommentsSection(data);
 
                                         // if (data.status == "pending") {
                                         // 	var isMentee = false;

@@ -1,28 +1,32 @@
 <footer>
     <div class="container">
-        <div class="row">
+        <div class="row" style="font-family: 'Lato', sans-serif; color:black;">
             Made with love by Gaurav and Chinmay &copy; <%= new Date().getFullYear() %>
         </div>
     </div>
 </footer>
 </div>
 
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+</head>
 <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Reply</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<h5 class="modal-title" style="font-family: 'Lato', sans-serif;">Reply</h5>
+				<button type="button" class="mtr-btn close" style="font-family: 'Lato', sans-serif; background-color: white; color: #000; border-radius: 14px;" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 
-			<div class="modal-body">
+			<div class="modal-body" style="font-family: 'Lato', sans-serif;">
 				<form onsubmit="return doPostReply(this);">
 					<input type="hidden" name="postId">
 					<input type="hidden" name="commentId">
 					<textarea name="reply" placeholder="Post your reply"></textarea>
-					<button type="submit">Post</button>
+					<button class="mtr-btn" style="font-family: 'Lato', sans-serif; background-color: white; color: #000; border-radius: 14px;" type="submit">Post</button>
 				</form>
 			</div>
 		</div>
@@ -33,6 +37,7 @@
 <script src="/public/js/script.js"></script>
 <script src="/public/js/main.min.js"></script>
 <script src="/public/js/socket.io.js"></script>
+
 
 <script>
 
@@ -98,35 +103,35 @@ function showMainMenu() {
 
     if (localStorage.getItem("accessToken")) {
         html += '<li>';
-            html += '<a href="/allProjectsMentor">All projects</a> ';
+            html += '<a href="/allProjectsMentor" style="font-family: "Lato", sans-serif;">All projects</a> ';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/student_proposals">Student proposals</a> ';
+            html += '<a href="/student_proposals" style="font-family: "Lato", sans-serif;">Student proposals</a> ';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/my_projects">My projects</a> ';
+            html += '<a href="/my_projects" style="font-family: "Lato", sans-serif;">My projects</a> ';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/grading">Grading</a> ';
+            html += '<a href="/grading" style="font-family: "Lato", sans-serif;">Grading</a> ';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/updateProfileMentor">Profile</a>';
+            html += '<a href="/updateProfileMentor" style="font-family: "Lato", sans-serif;">Profile</a>';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/logoutMentor" onclick="return doLogoutMentor();">Logout</a>';
+            html += '<a href="/logoutMentor" onclick="return doLogoutMentor();" style="font-family: "Lato", sans-serif;">Logout</a>';
         html += '</li>';
     } else {
         html += '<li>';
-            html += '<a href="/loginMentor">Login</a>';
+            html += '<a href="/loginMentor" style="font-family: "Lato", sans-serif;">Login</a>';
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/signupMentor">Signup</a>';
+            html += '<a href="/signupMentor" style="font-family: "Lato", sans-serif;">Signup</a>';
         html += '</li>';
     }
 
