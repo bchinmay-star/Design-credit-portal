@@ -128,18 +128,10 @@
 
 				html += '<div class="coment-area">';
 					html += '<ul class="we-comet" style="max-height: 300px; overflow-y: scroll;">';
-
-					// data.comments = data.comments.reverse();
 					for (var b = 0; b < data.comments.length; b++) {
 						var comment = data.comments[b];
 
 						html += '<li>';
-
-							// Show avatar in comment 
-
-							// html += '<div class="comet-avatar">';
-							// 	html += '<img src="' + mainURL + '/' + comment.user.profileImage + '">';
-							// html += '</div>';
 
 							html += '<div class="we-comment">';
 								html += '<div class="coment-head">';
@@ -158,15 +150,10 @@
 
 							html += '<ul>';
 
-								comment.replies = comment.replies.reverse();
-
 								for (var c = 0; c < comment.replies.length; c++) {
 									var reply = comment.replies[c];
 
 									html += '<li>';
-										// html += '<div class="comet-avatar">';
-										// 	html += '<img src="' + mainURL + '/' + reply.user.profileImage + '">';
-										// html += '</div>';
 
 										html += '<div class="we-comment">';
 											html += '<div class="coment-head">';
@@ -190,9 +177,6 @@
 
 					html += '<ul class="we-comet">';
 						html += '<li class="post-comment">';
-							// html += '<div class="comet-avatar">';
-							// 	html += '<img src="' + mainURL + '/' + window.user.profileImage + '">';
-							// html += '</div>';
 							html += '<div class="post-comt-box">';
 								html += '<form method="post" onsubmit="return doPostCommentStudent(this);">';
 									html += '<input type="hidden" name="_id" value="' + data._id + '">';
@@ -221,13 +205,6 @@
 
 						if (response.status == "success") {
 							form.comment.value = "";
-
-							// var commentsHtml = createCommentsSection(response.updatePost);
-							// document.getElementById("post-comments-" + form._id.value).innerHTML = commentsHtml;
-
-							// var comments = parseInt(document.getElementById("count-post-comments-" + form._id.value).innerHTML);
-							// comments++;
-							// document.getElementById("count-post-comments-" + form._id.value).innerHTML = comments;
 						}
 					}
 				};
@@ -258,9 +235,6 @@
 						if (response.status == "success") {
 							form.reply.value = "";
 							$("#replyModal").modal("hide");
-
-							// var commentsHtml = createCommentsSection(response.updatePost);
-							// document.getElementById("post-comments-" + form.postId.value).innerHTML = commentsHtml;
 						}
 					}
 				};
