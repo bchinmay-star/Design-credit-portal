@@ -715,6 +715,41 @@ http.listen(3000, function () {
 			result.render("allProjectsStudent");
 		});
 
+		app.get("/allottedProjects", function (request, result) {
+			result.render("allottedProjects");
+		});
+
+		app.post("/getallottedprojectsfeed", function (request, result) {
+			var accessToken = request.fields.accessToken;
+			database.collection("students").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+					var ids = [];
+					ids.push(user._id);
+
+					database.collection("projects")
+					.find()
+					.sort({
+						"createdAt": -1
+					})
+					.toArray(function (error, data) {
+
+						result.json({
+							"status": "success",
+							"message": "Record has been fetched",
+							"data": data
+						});
+					});
+				}
+			});
+		});		
+
 		app.get("/myProposals", function (request, result) {
 			result.render("myProposals");
 		});
@@ -890,6 +925,7 @@ http.listen(3000, function () {
 						"likers": [],
 						"comments": [],
 						"shares": [],
+						"grade" : "X",
 						"user": {
 							"_id": user._id,
 							"name": user.name,
@@ -914,7 +950,8 @@ http.listen(3000, function () {
 									"mentees": [],
 									"likers": [],
 									"comments": [],
-									"shares": []
+									"shares": [],
+									"grade" : "X"
 								}
 							}
 						}, function (error, data) {
@@ -960,6 +997,7 @@ http.listen(3000, function () {
 						"likers": [],
 						"comments": [],
 						"shares": [],
+						"grade" : "X",
 						"user": {
 							"_id": user._id,
 							"name": user.name,
@@ -984,7 +1022,8 @@ http.listen(3000, function () {
 									"mentees": [],
 									"likers": [],
 									"comments": [],
-									"shares": []
+									"shares": [],
+									"grade" : "X"
 								}
 							}
 						}, function (error, data) {
@@ -1476,6 +1515,42 @@ http.listen(3000, function () {
 					}
 				});
 			}
+			});
+		});
+
+		app.get("/grading", function (request, result) {
+			result.render("grading");
+		});
+
+		app.post("/getGrades", function (request, result) {
+			var accessToken = request.fields.accessToken;
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+
+					var ids = [];
+					ids.push(user._id);
+
+					database.collection("projects")
+					.find()
+					.sort({
+						"createdAt": -1
+					})
+					.toArray(function (error, data) {
+
+						result.json({
+							"status": "success",
+							"message": "Record has been fetched",
+							"data": data
+						});
+					});
+				}
 			});
 		});
 	});

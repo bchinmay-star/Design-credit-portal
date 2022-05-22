@@ -1,0 +1,103 @@
+<%- include ("includes/header") %>
+
+<section>
+	<div class="gap blue-bg">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row" id="page-contents">
+
+						<div class="col-md-3">
+						</div>
+
+						<div class="col-md-6">
+							<div class="central-meta">
+								<div class="editing-info">
+
+									<h5 class="f-title">
+										<i class="ti-info-alt"></i>
+										Grading
+									</h5>
+
+									
+                                    <div class="loadMore" id="grading"></div>
+                                        
+
+                                    <br>
+
+										<button type="submit" class="mtr-btn" name="submit">
+											<span>Update</span>
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-3">
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+    var isGrading = true;
+    function showGradingfeed(){
+        var ajax = new XMLHttpRequest();
+        ajax.open("POST", "/getGrades", true);
+
+        ajax.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+				var html = "";
+
+                html+="<table>";
+
+                html+="<tr>";
+                html+="<th>Project Title</th>";
+                html+="<th>Name of students</th>";
+                html+="<th>Grade</th>";
+                html+="</tr>";
+
+                for (var a = 0; a < response.data.length; a++) {
+                    var data = response.data[a];
+
+                    if (data.status == "accepted"){
+
+                        html+="<tr>";  
+                             
+                        html+= "<td>";
+                        html += data.title;
+                        html+= "</td>";
+
+                        html+= "<td>"; 
+                        for(var i=0; i<data.mentees.length; i++){
+                            html += data.mentees[i].name;
+                            if(i != data.mentees.length-1){
+                                html += "<br>";
+                            }
+                        }
+                        html+= "</td>";
+
+                        html+= "<td>";
+                        html += data.grade;
+                        html+= "</td>";
+
+                        html+= "</tr>";
+                    }
+                }
+                html+="</table>";
+                document.getElementById("grading").innerHTML = html;
+            }
+            
+        };
+        var formData = new FormData();
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		ajax.send(formData);
+    }
+</script>
+
+<%- include ("includes/footer") %>

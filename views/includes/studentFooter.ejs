@@ -45,6 +45,10 @@
                         showAddprojectStudent();
                         // showprojectsfeed();
                     }
+
+                    if (typeof isAllottedProjectsPage !== "undefined" && isAllottedProjectsPage) {
+                        showallottedprojectsfeed();
+                    }
                     
                 } else {
                     localStorage.removeItem("accessToken");
@@ -70,7 +74,7 @@ function showMainMenu() {
         html += '</li>';
 
         html += '<li>';
-            html += '<a href="/allotedProjects">Alloted projects</a> ';
+            html += '<a href="/allottedProjects">Allotted projects</a> ';
         html += '</li>';
 
         html += '<li>';
