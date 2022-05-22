@@ -74,6 +74,10 @@ function getUserMentor() {
                         showPendingApplicationsfeed();
                     }
 
+                    if (typeof isGrading !== "undefined" && isGrading) {
+                        showGradingfeed(); 
+                    }
+
                 } else {
                     localStorage.removeItem("accessToken");
                 }
@@ -103,6 +107,10 @@ function showMainMenu() {
 
         html += '<li>';
             html += '<a href="/my_projects">My projects</a> ';
+        html += '</li>';
+
+        html += '<li>';
+            html += '<a href="/grading">Grading</a> ';
         html += '</li>';
 
         html += '<li>';

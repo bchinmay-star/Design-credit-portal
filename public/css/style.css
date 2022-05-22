@@ -174,11 +174,17 @@ img {
     /* background-color: #a2c4f3; */
 }
 
-.green-bg{
-    float: left;
-    width: 100%;
-    background-color: #b6d7a8;
-    /* background-color: #a2c4f3; */
+table {
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 10px;
+}
+th {
+    text-align: left;
 }
 
 .theme-layout.boxed {
