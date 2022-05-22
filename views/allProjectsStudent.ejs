@@ -47,31 +47,6 @@
 		return false;
 	}
 
-	// function doPost(form){
-	// 	var ajax = new XMLHttpRequest();
-	// 	ajax.open("POST", "/addproject", true);
-
-	// 	ajax.onreadystatechange = function() {
-	// 		if (this.readyState == 4 && this.status==200){
-	// 			var response = JSON.parse(this.responseText);
-	// 			alert(response.message);
-	// 			if(response.status == "success"){
-	// 				document.getElementById("form-add-project").querySelector("textarea[name='title']").value="";
-	// 				document.getElementById("form-add-project").querySelector("textarea[name='description']").value="";
-	// 				document.getElementById("form-add-project").querySelector("textarea[name='skills']").value="";
-					
-	// 				showprojectsfeed();
-	// 			}
-	// 		}
-	// 	};
-
-	// 	var formData = new FormData(form);
-	// 	formData.append("accessToken", localStorage.getItem("accessToken"));
-	// 	ajax.send(formData);
-
-	// 	return false;
-	// }
-
 	function showprojectsfeedstudent() {
 		var ajax = new XMLHttpRequest();
 		ajax.open("POST", "/getprojectsfeedStudent", true);
@@ -94,10 +69,6 @@
 						html += '<div class="user-project">';
 							html += '<div class="project-info">';
 
-								// html += '<figure>';
-								// 	html += '<img src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
-								// html += '</figure>';
-
 								html += '<div class="title colortxtblack">';
 										html += '<h2>';
 											html += data.title;
@@ -107,11 +78,7 @@
 
 								html += '<div class="user-name colortxtblack">';
 									html += '<span>Added by : ';
-									// html += '<ins class="colortxtblue">';
-											// html += '<a href="/user/' + data.user._id + '">';
 												html += data.user.name;
-											// html += '</a>';
-									// html += '</ins>';
 									html+= '</span>';
 								html += '</div>';
 
@@ -143,10 +110,6 @@
 											html += '</p>';
 										html += '</div>';
 									html += '</div>';
-									// html+='<hr>';
-
-									// html+=createLikesSection(data);
-									// html+=createCommentsSection(data);
 
 									if (data.status == "pending") {
 										var isMentee = false;

@@ -59,11 +59,7 @@
 
 												html += '<div class="user-name colortxtblack">';
 													html += '<span>Added by: ';
-													// html += '<ins >';
-															// html += '<a href="/user/' + data.user._id + '">';
 																html += data.user.name;
-															// html += '</a>';
-													// html += '</ins>';
 													html+= '</span>';
 												html += '</div>';
 
@@ -100,30 +96,7 @@
 														html += '</div>';
 													html += '</div>';
 													html+='<hr>';
-
-													// html+=createLikesSection(data);
 													html+=createCommentsSectionStudent(data);
-
-													// if (data.status == "pending") {
-													// 	var isMentee = false;
-													// 	for (var b=0;b<data.mentees.length;b++){
-													// 		var tempData=data.mentees[b];
-													// 		if(tempData._id == window.user._id){
-													// 			isMentee=true;
-													// 			break;
-													// 		}
-													// 	}
-
-													// 	html += '<div>';
-													// 	if(!isMentee && data.user._id!=window.user._id){
-															
-													// 			html+='<form>'
-													// 				html+='<button type="submit" class="show-interest-btn" user-id="'+ window.user._id +'" data-id="' + data._id + '" onclick="addMenteeRequest(this);" class="btn add mentee">Show interest</button>'
-													// 			html+='</form>'
-															
-													// 	}
-													// 	html += '</div>';
-													// }
 												html += '</div>';
 											html += '</div>';
 										html += '</div>';

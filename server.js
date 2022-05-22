@@ -64,9 +64,6 @@ http.listen(3000, function () {
 							"reset_token": reset_token,
 							"profileImage": "",
 							"coverPhoto": "",
-							// "dob": "",
-							// "city": "",
-							// "country": "",
 							"aboutMe": "",
 							"friends": [],
 							"pages": [],
@@ -232,10 +229,6 @@ http.listen(3000, function () {
 		app.get("/logoutMentor", function (request, result) {
 			result.redirect("/loginMentor");
 		});
-
-		// app.get("/logoutStudent", function (request, result) {
-		// 	result.redirect("/loginStudent");
-		// });
 
 		app.get("/studentLogout", function (request, result) {
 			result.redirect("/loginStudent");
@@ -556,9 +549,6 @@ http.listen(3000, function () {
         app.post("/updateProfileMentor", function (request, result) {
 			var accessToken = request.fields.accessToken;
 			var name = request.fields.name;
-			// var dob = request.fields.dob;
-			// var city = request.fields.city;
-			// var country = request.fields.country;
 			var aboutMe = request.fields.aboutMe;
 
 			database.collection("mentors").findOne({
@@ -575,9 +565,6 @@ http.listen(3000, function () {
 					}, {
 						$set: {
 							"name": name,
-							// "dob": dob,
-							// "city": city,
-							// "country": country,
 							"aboutMe": aboutMe
 						}
 					}, function (error, data) {
@@ -593,9 +580,6 @@ http.listen(3000, function () {
 		app.post("/studentUpdateProfile", function (request, result) {
 			var accessToken = request.fields.accessToken;
 			var name = request.fields.name;
-			// var dob = request.fields.dob;
-			// var city = request.fields.city;
-			// var country = request.fields.country;
 			var aboutMe = request.fields.aboutMe;
 
 			database.collection("students").findOne({
@@ -612,9 +596,6 @@ http.listen(3000, function () {
 					}, {
 						$set: {
 							"name": name,
-							// "dob": dob,
-							// "city": city,
-							// "country": country,
 							"aboutMe": aboutMe
 						}
 					}, function (error, data) {
@@ -1257,18 +1238,7 @@ http.listen(3000, function () {
 								result.json({
 									"status": "success",
 									"message": "Comment has been posted."
-									// "updatePost": updatePost
 								});
-
-								// database.collection("projects").findOne({
-								// 	"_id": ObjectId(_id)
-								// }, function (error, updatePost) {
-								// 	result.json({
-								// 		"status": "success",
-								// 		"message": "Comment has been posted.",
-								// 		"updatePost": updatePost
-								// 	});
-								// });
 							});
 
 						}
@@ -1369,18 +1339,7 @@ http.listen(3000, function () {
 								result.json({
 									"status": "success",
 									"message": "Comment has been posted."
-									// "updatePost": updatePost
 								});
-
-								// database.collection("projects").findOne({
-								// 	"_id": ObjectId(_id)
-								// }, function (error, updatePost) {
-								// 	result.json({
-								// 		"status": "success",
-								// 		"message": "Comment has been posted.",
-								// 		"updatePost": updatePost
-								// 	});
-								// });
 							});
 
 						}
@@ -1466,18 +1425,7 @@ http.listen(3000, function () {
 								result.json({
 									"status": "success",
 									"message": "Reply has been posted."
-									// "updatePost": updatePost
 								});
-
-								// database.collection("projects").findOne({
-								// 	"_id": ObjectId(postId)
-								// }, function (error, updatePost) {
-								// 	result.json({
-								// 		"status": "success",
-								// 		"message": "Reply has been posted.",
-								// 		"updatePost": updatePost
-								// 	});
-								// });
 							});
 
 						}
@@ -1563,18 +1511,7 @@ http.listen(3000, function () {
 								result.json({
 									"status": "success",
 									"message": "Reply has been posted."
-									// "updatePost": updatePost
 								});
-
-								// database.collection("projects").findOne({
-								// 	"_id": ObjectId(postId)
-								// }, function (error, updatePost) {
-								// 	result.json({
-								// 		"status": "success",
-								// 		"message": "Reply has been posted.",
-								// 		"updatePost": updatePost
-								// 	});
-								// });
 							});
 
 						}
@@ -1641,7 +1578,6 @@ http.listen(3000, function () {
 			var accessToken = request.fields.accessToken;
 			var project_id = request.fields.project_id;
 			var mentor_id = request.fields.mentor_id;
-			// console.log(_id);
 			database.collection("mentors").findOne({
 				"accessToken": accessToken
 			}, function (error, user) {
@@ -1655,8 +1591,6 @@ http.listen(3000, function () {
 					database.collection("projects").findOne({
 						"_id": ObjectId(project_id)
 					},function(error, user){
-						// console.log(user);
-						// console.log(me);
 						if (user == null) {
 							result.json({
 								"status": "error",
@@ -1670,7 +1604,6 @@ http.listen(3000, function () {
 									"status": "accepted"
 								}
 							}, function (error, data){
-								// console.log(_id);
 								result.json({
 									"status": "success",
 									"message": "Project has been marked as complete."
@@ -1789,7 +1722,6 @@ http.listen(3000, function () {
 					}else{
 						database.collection("projects").updateOne({
 						"_id": ObjectId(project_id)
-						// "mentees._id": ObjectId(mentee_id)
 					}, {
 							$set:{
 								"grade":"S"
@@ -1832,7 +1764,6 @@ http.listen(3000, function () {
 					}else{
 						database.collection("projects").updateOne({
 						"_id": ObjectId(project_id)
-						// "mentees._id": ObjectId(mentee_id)
 					}, {
 							$set:{
 								"grade":"U"
@@ -1875,7 +1806,6 @@ http.listen(3000, function () {
 					}else{
 						database.collection("projects").updateOne({
 						"_id": ObjectId(project_id)
-						// "mentees._id": ObjectId(mentee_id)
 					}, {
 							$set:{
 								"grade":"X"
@@ -1892,5 +1822,4 @@ http.listen(3000, function () {
 			});
 		});
 	});
-
 });

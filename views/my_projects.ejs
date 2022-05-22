@@ -14,11 +14,9 @@
 						<div class="col-md-6">
 
 							<div id="show-complete-applications">
-                                <!-- showCompletedApplicationsfeed(); -->
                             </div>
 
 							<div class="loadMore" id="show-pending-applications">
-                                <!-- showPendingApplicationsfeed(); -->
 							</div>
 						</div>
 					</div>
@@ -53,10 +51,6 @@
                             html += '<div class="user-project">';
                                 html += '<div class="project-info">';
 
-                                    // html += '<figure>';
-                                    // 	html += '<img src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
-                                    // html += '</figure>';
-
                                     html += '<div class="title colortxtblack">';
                                             html += '<h2>';
                                                 html += data.title;
@@ -66,11 +60,7 @@
 
                                     html += '<div class="user-name colortxtblack">';
 									html += '<span>Added by: ';
-									// html += '<ins >';
-											// html += '<a href="/user/' + data.user._id + '">';
 												html += data.user.name;
-											// html += '</a>';
-									// html += '</ins>';
 									html+= '</span>';
 								    html += '</div>';
 
@@ -108,7 +98,6 @@
 
                                         html += '<div>';
                                             html+= 'Mentees';
-                                            // html+='<hr>';
 
                                             html += '<div class="selected-mentees">';
                                                 for (var b = 0; b < data.mentees.length; b++){
@@ -126,7 +115,6 @@
                                             html += '</div>';
                                         html += '</div>';
                                         html+='<hr>';
-                                        // html+=createLikesSection(data);
                                         html+=createCommentsSection(data);
 
                                     html += '</div>';
@@ -169,11 +157,6 @@
                         html += '<div class="central-meta item">';
                             html += '<div class="user-project">';
                                 html += '<div class="project-info">';
-
-                                    // html += '<figure>';
-                                    // 	html += '<img src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
-                                    // html += '</figure>';
-
                                     html += '<div class="title colortxtblack">';
                                             html += '<h2>';
                                                 html += data.title;
@@ -183,11 +166,7 @@
 
                                     html += '<div class="user-name colortxtblack">';
                                         html += '<span>Added by: ';
-                                        // html += '<ins >';
-                                                // html += '<a href="/user/' + data.user._id + '">';
                                                     html += data.user.name;
-                                                // html += '</a>';
-                                        // html += '</ins>';
                                         html+= '</span>';
 								    html += '</div>';
 
@@ -227,7 +206,6 @@
 
                                         html += '<div>';
                                             html+= 'Selected applicants';
-                                            // html+='<hr>';
 
                                             html += '<div class="selected-applicants">';
                                                 for (var b = 0; b < data.mentees.length; b++){
@@ -276,10 +254,6 @@
                                                 }
                                             html += '</div>';
                                         html += '</div>';
-                                        // html+='<hr>';
-
-                                        // html+=createLikesSection(data);
-                                        // html+=createCommentsSection(data);
                                         html+='<hr>';
                                         html+='<form>'
 											html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn mark-complete-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="markAsComplete(this);" class="btn mark complete">Mark as complete</button>'
