@@ -133,8 +133,9 @@
 				var html = "";
 
 				html += '<div class="coment-area">';
-					html += '<ul class="we-comet" style="max-height: 300px; overflow-y: scroll;">';
-
+					html += '<ul class="we-comet" style="max-height: 300px;">';
+					html+='<div class="cmntscroll1">';
+						html+='<div class="cmntscroll2">';
 					for (var b = 0; b < data.comments.length; b++) {
 						var comment = data.comments[b];
 
@@ -180,8 +181,10 @@
 
 						html += '</li>';
 					}
+					html+='</div>';
+					html+='</div>';
 					html += '</ul>';
-
+					
 					html += '<ul class="we-comet">';
 						html += '<li class="post-comment">';
 							html += '<div class="post-comt-box">';
@@ -257,7 +260,7 @@
 				if (localStorage.getItem("accessToken")) {
 					var html = "";
 
-					html += '<div class="central-meta">';
+					html += '<div class="central-meta" style="color:black;">';
 						html += '<div class="new-projectbox">';
 							html += "Add new project";
 							html += '<hr>';
@@ -267,7 +270,8 @@
 									html += '<hr>';
 									html += '<input name="type" type="hidden" value="post">';
 									html += '<textarea rows="2" name="title" placeholder="Add project title"></textarea>';
-									html += '<hr>';
+									html+='<br>';
+									// html += '<hr>';
 									html += "Project description";
 									html += '<hr>';
 									html += '<input name="type" type="hidden" value="post">';
@@ -278,7 +282,7 @@
 									html += '<input name="type" type="hidden" value="post">';
 									html += '<textarea rows="2" name="skills" placeholder="Add the required skills"></textarea>';
 									html += '<hr>';
-									html += '<button class="mtr-btn" style="border-radius: 14px;" type="submit">Submit</button>';
+									html += '<button class="mtr-btn" style="background-color: white; color: #000; border-radius: 14px;" type="submit">Submit</button>';
 								html += '</form>';
 							html += '</div>';
 						html += '</div>';

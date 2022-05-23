@@ -4,7 +4,7 @@
 	<div class="feature-photo">
 
 		<figure>
-			<img class="cover-photo" id="cover-photo" style="width: 100%; height: 700px; object-fit: cover;" onerror="this.src = '/public/img/default_cover.jpg'" />
+			<img class="cover-photo" id="cover-photo" style="height: 480px; object-fit: contain;" onerror="this.src = '/public/img/default_cover.jpg'" />
 		</figure>
 
 		<form class="edit-phto" id="form-cover-photo" onsubmit="return false;">
@@ -21,7 +21,7 @@
 					<div class="user-avatar">
 						<figure>
 
-							<img class="profile-image" id="profile-image" style="width: 100%; height: 150px; object-fit: cover;" onerror="this.src = '/public/img/default_profile.jpg'" />
+							<img class="profile-image" id="profile-image" style="object-fit: contain;" onerror="this.src = '/public/img/default_profile.jpg'" />
 
 							<form class="edit-phto" id="form-upload-image" onsubmit="return false;">
 								<i class="fa fa-camera-retro"></i>
