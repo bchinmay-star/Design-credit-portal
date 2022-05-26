@@ -1680,7 +1680,12 @@ http.listen(3000, function () {
 					ids.push(user._id);
 
 					database.collection("projects")
-					.find()
+					.find({
+						"user._id": {
+							$in: ids
+						}
+
+				})
 					.sort({
 						"createdAt": -1
 					})
