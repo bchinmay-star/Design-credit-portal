@@ -11,6 +11,10 @@
 
 						</div>
 
+                        <div id="search-project-btn" class="tryhard">
+                            <input type="text" id="myInput" onkeyup="showstudentproposalsfeed()" placeholder="Search for projects.." title="Type mentor's name">
+                        </div>
+
 						<div class="col-md-6">
 
 							<div class="loadMore" id="studentProposalsFeed">
@@ -35,7 +39,8 @@
 			if (this.readyState == 4 && this.status == 200) {
 
 				var response = JSON.parse(this.responseText);
-
+                var input = document.getElementById("myInput");
+    			var filter = input.value.toUpperCase();
 				var html = "";
 				html+= '<h2 class="" style="color: white; font-weight: bold;">';
 				html += "Student proposals";
@@ -44,7 +49,7 @@
 				html += '<div class="central-meta item">';
 				for (var a = 0; a < response.data.length; a++) {
 					var data = response.data[a];
-                    if(data.user.status=="student"){
+                    if(data.user.status=="student"  && (!filter || filter==data.user.name.toUpperCase())){
                         html += '<div class="central-meta item">';
                             html += '<div class="user-project">';
                                 html += '<div class="project-info">';

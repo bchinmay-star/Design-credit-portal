@@ -22,6 +22,10 @@
 								</form>
 							</div>
 
+							<div id="search-project-btn" class="tryhard">
+								<input type="text" id="myInput" onkeyup="showprojectsfeed()" placeholder="Search for projects.." title="Type mentor's name">
+							</div>
+
 							<div class="loadMore" id="projectsfeed">
 
 							</div>
@@ -48,6 +52,7 @@
 
 
 	function showprojectsfeed() {
+
 		var ajax = new XMLHttpRequest();
 		ajax.open("POST", "/getprojectsfeed", true);
 
@@ -55,7 +60,8 @@
 			if (this.readyState == 4 && this.status == 200) {
 
 				var response = JSON.parse(this.responseText);
-
+				var input = document.getElementById("myInput");
+    			var filter = input.value.toUpperCase();
 				var html = "";
 				html+= '<h2 style="color: white; font-weight: bold;" class="">';
 				html += "Open projects";
@@ -64,7 +70,7 @@
 				html += '<div class="central-meta item">';
 				for (var a = 0; a < response.data.length; a++) {
 					var data = response.data[a];
-					if(data.status=="pending" && data.user.status == "mentor"){
+					if(data.status=="pending" && data.user.status == "mentor" && (!filter || filter==data.user.name.toUpperCase())){
 						html += '<div class="central-meta item">';
 							html += '<div class="user-project">';
 								html += '<div class="project-info">';
