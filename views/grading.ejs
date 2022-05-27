@@ -83,6 +83,7 @@
                         html+= "<td>";
                         
                         if(data.grade=="Z"){
+							html += "Grade not allotted";
                             html +='<form>'
                                 html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-S-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToS(this);" class="btn update grade S">Update to S</button>'
                             html +='</form>'
@@ -92,8 +93,30 @@
 							html +='<form>'
                                 html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-X-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToX(this);" class="btn update grade X">Update to X</button>'
                             html +='</form>'
-                        }else{
+                        }else if(data.grade=="S"){
 							html += data.grade;
+                            html +='<form>'
+                                html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-U-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToU(this);" class="btn update grade U">Update to U</button>'
+                            html +='</form>'
+							html +='<form>'
+                                html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-X-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToX(this);" class="btn update grade X">Update to X</button>'
+                            html +='</form>'
+						}else if(data.grade=="X"){
+							html += data.grade;
+							html +='<form>'
+                                html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-S-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToS(this);" class="btn update grade S">Update to S</button>'
+                            html +='</form>'
+                            html +='<form>'
+                                html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-U-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToU(this);" class="btn update grade U">Update to U</button>'
+                            html +='</form>'
+						}else if(data.grade=="U"){
+							html += data.grade;
+							html +='<form>'
+                                html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-S-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToS(this);" class="btn update grade S">Update to S</button>'
+                            html +='</form>'
+							html +='<form>'
+                                html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn update-grade-X-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" onclick="updateGradeToX(this);" class="btn update grade X">Update to X</button>'
+                            html +='</form>'
 						}
                         html+= "</td>";
 

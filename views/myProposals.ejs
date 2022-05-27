@@ -44,7 +44,7 @@
 				html += '<div class="central-meta item">';
 				for (var a = 0; a < response.data.length; a++) {
 					var data = response.data[a];
-                    if(data.user._id==window.user._id){
+                    if(data.proposed_by._id==window.user._id){
                         html += '<div class="central-meta item">';
                             html += '<div class="user-project">';
                                 html += '<div class="project-info">';
@@ -60,6 +60,14 @@
                                                     html += data.user.name;
                                         html+= '</span>';
                                     html += '</div>';
+
+                                    if(data.user._id!=data.proposed_by._id){
+										html += '<div class="user-name colortxtblack">';
+											html += '<span>Proposed by: ';
+												html += data.proposed_by.name;
+											html+= '</span>';
+										html += '</div>';
+									}
 
                                     html += '<div class="project-date colortxtblack">';
                                         var createdAt = new Date(data.createdAt);

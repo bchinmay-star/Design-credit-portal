@@ -803,6 +803,143 @@ http.listen(3000, function () {
 			});
 		});
 
+		app.post("/acceptandmentor", function(request, result){
+			var accessToken = request.fields.accessToken;
+			var mentee_id = request.fields.mentee_id;
+			var project_id = request.fields.project_id;
+			var mentor_id = request.fields.mentor_id;
+			var title = request.fields.title;
+			var description = request.fields.description;
+			var skills = request.fields.skills;
+			var createdAt = request.fields.createdAt;
+			var menteeName = request.fields.menteeName;
+			var menteeImage = request.fields.menteeImage;
+
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+					var me=user;
+					database.collection("projects").findOne({
+						"_id": ObjectId(project_id)
+					},function(error, user){
+						if (user == null) {
+							result.json({
+								"status": "error",
+								"message": "Project does not exist."
+							});
+						}else{
+							database.collection("projects").updateOne({
+								"_id": ObjectId(project_id)
+							}, {
+								$push: {
+									"mentees": {
+										"_id": ObjectId(mentee_id),
+										"name": menteeName,
+										"profileImage": menteeImage,
+										"status": "accepted",
+										"sentByMe": false,
+										"inbox": []
+									}
+								}, $set:{
+									"user": {
+										"_id": ObjectId(me._id),
+										"name": me.name,
+										"username": me.username,
+										"profileImage": me.profileImage,
+										"status": "mentor"
+									}
+								}
+							}, function (error, data) {
+								database.collection("mentors").updateOne({
+									"accessToken": accessToken
+								}, {
+									$push: {
+										"projects": {
+											"_id": ObjectId(project_id),
+											"title": title,
+											"description": description,
+											"skills": skills,
+											"type": "post",
+											"createdAt": createdAt,
+											"status": "pending",
+											"mentees": {
+												"_id": ObjectId(mentee_id),
+												"name": menteeName,
+												"profileImage": menteeImage,
+												"status": "accepted",
+												"sentByMe": false,
+												"inbox": []
+											},
+											"likers": [],
+											"comments": [],
+											"shares": [],
+											"grade" : "Z"
+										}
+									}
+								}, function (error, data) {
+									result.json({
+										"status": "success",
+										"message": "You have been marked as the mentor for the object."
+									});
+								});
+							});
+						}
+					});
+				}
+			});
+			// database.collection("students").findOne({
+			// 	"accessToken": accessToken
+			// }, function (error, user) {
+			// 	if (user == null) {
+			// 		result.json({
+			// 			"status": "error",
+			// 			"message": "User has been logged out. Please login again."
+			// 		});
+
+			// 	} else {
+			// 		var me=user;
+			// 		database.collection("projects").findOne({
+			// 			"_id": ObjectId(project_id)
+			// 		},function(error, user){
+			// 			if (user == null) {
+			// 				result.json({
+			// 					"status": "error",
+			// 					"message": "Project does not exist."
+			// 				});		
+
+			// 			}else{
+			// 				database.collection("projects").updateOne({
+			// 					"_id": ObjectId(project_id)
+			// 				}, {
+			// 					$push: {
+			// 						"mentees": {
+			// 							"_id": me._id,
+			// 							"name": me.name,
+			// 							"profileImage": me.profileImage,
+			// 							"status": "pending",
+			// 							"sentByMe": false,
+			// 							"inbox": []
+			// 						}
+			// 					}		
+			// 				}, function (error, data){
+			// 					result.json({
+			// 						"status": "success",
+			// 						"message": "Mentee request has been sent."
+			// 					});
+			// 				});
+							
+			// 			}
+			// 		})
+			// 	}
+			// });
+		});	
+
 		app.post("/getprojectsfeed", function (request, result) {
 			var accessToken = request.fields.accessToken;
 			database.collection("mentors").findOne({
@@ -814,14 +951,14 @@ http.listen(3000, function () {
 						"message": "User has been logged out. Please login again."
 					});
 				} else {
-
 					var ids = [];
 					ids.push(user._id);
-
+					// console.log("10");
 					database.collection("projects")
 					.find()
 					.sort({
-						"createdAt": -1
+						// "createdAt": -1
+						"title": 1
 					})
 					.toArray(function (error, data) {
 
@@ -853,7 +990,7 @@ http.listen(3000, function () {
 					database.collection("projects")
 					.find()
 					.sort({
-						"createdAt": -1
+						"title": 1
 					})
 					.toArray(function (error, data) {
 
@@ -894,7 +1031,6 @@ http.listen(3000, function () {
 						"message": "User has been logged out. Please login again."
 					});
 				} else {
-
 					database.collection("projects").insertOne({
 						"title": title,
 						"description": description,
@@ -913,9 +1049,15 @@ http.listen(3000, function () {
 							"username": user.username,
 							"profileImage": user.profileImage,
 							"status": "mentor"
+						},
+						"proposed_by": {
+							"_id": user._id,
+							"name": user.name,
+							"username": user.username,
+							"profileImage": user.profileImage,
+							"status": "mentor"
 						}
 					}, function (error, data) {
-
 						database.collection("mentors").updateOne({
 							"accessToken": accessToken
 						}, {
@@ -936,7 +1078,6 @@ http.listen(3000, function () {
 								}
 							}
 						}, function (error, data) {
-
 							result.json({
 								"status": "success",
 								"message": "Project has been uploaded."
@@ -966,7 +1107,6 @@ http.listen(3000, function () {
 						"message": "User has been logged out. Please login again."
 					});
 				} else {
-
 					database.collection("projects").insertOne({
 						"title": title,
 						"description": description,
@@ -985,9 +1125,15 @@ http.listen(3000, function () {
 							"username": user.username,
 							"profileImage": user.profileImage,
 							"status": "student"
+						},
+						"proposed_by": {
+							"_id": user._id,
+							"name": user.name,
+							"username": user.username,
+							"profileImage": user.profileImage,
+							"status": "student"
 						}
 					}, function (error, data) {
-
 						database.collection("students").updateOne({
 							"accessToken": accessToken
 						}, {
@@ -1008,7 +1154,6 @@ http.listen(3000, function () {
 								}
 							}
 						}, function (error, data) {
-
 							result.json({
 								"status": "success",
 								"message": "Project has been uploaded."
@@ -1616,6 +1761,48 @@ http.listen(3000, function () {
 
 		});
 
+		app.post("/opentoall", function(request, result){
+			var accessToken = request.fields.accessToken;
+			var project_id = request.fields.project_id;
+			var mentor_id = request.fields.mentor_id;
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+					var me=user;
+					database.collection("projects").findOne({
+						"_id": ObjectId(project_id)
+					},function(error, user){
+						if (user == null) {
+							result.json({
+								"status": "error",
+								"message": "Project does not exist."
+							});
+						}else{
+							database.collection("projects").updateOne({
+								"_id": ObjectId(project_id)
+							}, {
+								$set: {
+									"status": "pending"
+								}
+							}, function (error, data){
+								result.json({
+									"status": "success",
+									"message": "Project has been marked as open to all."
+								});
+							});
+						}
+					})
+				}
+			});
+
+		});
+
 		app.post("/acceptMentee", function(request, result){
 			var accessToken = request.fields.accessToken;
 			var project_id = request.fields.project_id;
@@ -1647,6 +1834,50 @@ http.listen(3000, function () {
 				}, {
 					$set:{
 						"mentees.$.status":"accepted"
+					}, function (error, data){
+						result.json({
+						"status": "success",
+						"message": "Mentee request has been accepted."
+						});
+							}
+						});
+					}
+				});
+			}
+			});
+		});
+
+		app.post("/removeMentee", function(request, result){
+			var accessToken = request.fields.accessToken;
+			var project_id = request.fields.project_id;
+			var mentor_id = request.fields.mentor_id;
+			var mentee_id = request.fields.mentee_id;
+
+			database.collection("mentors").findOne({
+				"accessToken": accessToken
+			}, function (error, user) {
+				if (user == null) {
+					result.json({
+						"status": "error",
+						"message": "User has been logged out. Please login again."
+					});
+				} else {
+					var me=user;
+					database.collection("projects").findOne({
+						"_id": ObjectId(project_id)
+					},function(error, user){
+					if (user == null) {
+						result.json({
+						"status": "error",
+						"message": "Project does not exist."
+					});
+				}else{
+					database.collection("projects").updateOne({
+					"_id": ObjectId(project_id),
+					"mentees._id": ObjectId(mentee_id)
+				}, {
+					$set:{
+						"mentees.$.status":"removed"
 					}, function (error, data){
 						result.json({
 						"status": "success",

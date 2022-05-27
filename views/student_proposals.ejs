@@ -54,44 +54,39 @@
                                             html += '</h2>';
                                     html += '</div>';
                                     html+='<hr>';
-
                                     html += '<div class="user-name colortxtblack">';
                                         html += '<span>Added by: ';
                                                     html += data.user.name;
                                         html+= '</span>';
                                     html += '</div>';
-
                                     html += '<div class="project-date colortxtblack">';
                                         var createdAt = new Date(data.createdAt);
                                         var date = createdAt.getDate() + "";
                                         date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
-
                                         html += '<span>Floated on: ' + date + '</span>';
                                     html += '</div>';
                                     html+='<br>';
-
                                     html += '<div class="project-meta colortxtblack">';
-                                        
                                         html += '<div>';
                                             html+= 'Description';
-                                        
-                                        
                                             html += '<div>';
                                                 html += '<p>';
                                                     html += data.description;
                                                 html += '</p>';
                                             html += '</div>';
-
                                         html += '</div>';
-
                                         html += '<div>';
                                             html+= 'Skills required';
-                                        
                                             html += '<div class="skills">';
                                                 html += '<p>';
                                                     html += data.skills;
                                                 html += '</p>';
                                             html += '</div>';
+                                        html += '</div>';
+                                        html += '<div>';
+                                            html+='<form>'
+												html+='<button type="submit" style="background-color: white; color: #000; border-radius: 14px;" class="mtr-btn accept-and-mentor-btn" mentor-id="'+ window.user._id +'" project-id="' + data._id + '" mentee-id="' + data.user._id + '" mentee-name="' + data.user.name + '" mentee-image="' + data.user.profileImage + '" title="' + data.title + '" description="' + data.description + '" skills="' + data.skills + '" createdAt="' + data.createdAt + '" onclick="acceptandmentor(this);">Accept and mentor</button>'
+											html+='</form>'
                                         html += '</div>';
                                     html += '</div>';
                                 html += '</div>';
@@ -109,6 +104,42 @@
 
 		var formData = new FormData();
 		formData.append("accessToken", localStorage.getItem("accessToken"));
+		ajax.send(formData);
+	}
+
+    function acceptandmentor(self){
+		var mentee_id = self.getAttribute("mentee-id");
+		var project_id = self.getAttribute("project-id");
+		var mentor_id = self.getAttribute("mentor-id");
+        var title = self.getAttribute("title");
+        var description = self.getAttribute("description");
+        var skills = self.getAttribute("skills");
+        var createdAt = self.getAttribute("createdAt");
+        var menteeName = self.getAttribute("mentee-name");
+        var menteeImage = self.getAttribute("mentee-image");
+        
+		var ajax = new XMLHttpRequest();
+		ajax.open("POST", "/acceptandmentor", true);
+
+		ajax.onreadystatechange = function() {
+			if (this.readyState ==4 && this.status == 200){
+				var response = JSON.parse(this.responseText);
+				alert(response.message);
+				self.remove();
+			}
+		};
+
+		var formData = new FormData();
+		formData.append("accessToken", localStorage.getItem("accessToken"));
+		formData.append("mentee_id", mentee_id);
+		formData.append("project_id", project_id);
+		formData.append("mentor_id", mentor_id);
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("skills", skills);
+        formData.append("createdAt", createdAt);
+        formData.append("menteeName", menteeName);
+        formData.append("menteeImage", menteeImage);
 		ajax.send(formData);
 	}
 </script>

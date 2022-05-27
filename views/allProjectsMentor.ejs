@@ -58,66 +58,68 @@
 
 				var html = "";
 				html+= '<h2 style="color: white; font-weight: bold;" class="">';
-				html += "All projects";
+				html += "Open projects";
 				html+= "</h2>";
 				html += '<hr>';
 				html += '<div class="central-meta item">';
 				for (var a = 0; a < response.data.length; a++) {
 					var data = response.data[a];
+					if(data.status=="pending" && data.user.status == "mentor"){
+						html += '<div class="central-meta item">';
+							html += '<div class="user-project">';
+								html += '<div class="project-info">';
 
-					html += '<div class="central-meta item">';
-						html += '<div class="user-project">';
-							html += '<div class="project-info">';
-
-								html += '<div class="title colortxtblack">';
+									html += '<div class="title colortxtblack">';
 										html += '<h2>';
 											html += data.title;
 										html += '</h2>';
-								html += '</div>';
-								html+='<hr>';
-
-								html += '<div class="user-name colortxtblack">';
-									html += '<span>Added by: ';
-												html += data.user.name;
-									html+= '</span>';
-								html += '</div>';
-
-								html += '<div class="project-date colortxtblack">';
-									var createdAt = new Date(data.createdAt);
-									var date = createdAt.getDate() + "";
-									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
-
-									html += '<span>Floated on: ' + date + '</span>';
-								html += '</div>';
-								html+='<br>';
-
-								html += '<div class="project-meta colortxtblack">';
-									
-									html += '<div>';
-										html+= 'Description';
-									
-									
-										html += '<div >';
-											html += '<p>';
-												html += data.description;
-											html += '</p>';
-										html += '</div>';
-
 									html += '</div>';
+									html+='<hr>';
 
-									html += '<div>';
-										html+= 'Skills required';
+									html += '<div class="user-name colortxtblack">';
+										html += '<span>Added by: ';
+											html += data.user.name;
+										html+= '</span>';
+									html += '</div>';
 									
-										html += '<div class="skills">';
-											html += '<p>';
-												html += data.skills;
-											html += '</p>';
+									if(data.user._id!=data.proposed_by._id){
+										html += '<div class="user-name colortxtblack">';
+											html += '<span>Proposed by: ';
+												html += data.proposed_by.name;
+											html+= '</span>';
+										html += '</div>';
+									}
+									html += '<div class="project-date colortxtblack">';
+										var createdAt = new Date(data.createdAt);
+										var date = createdAt.getDate() + "";
+										date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+										html += '<span>Floated on: ' + date + '</span>';
+									html += '</div>';
+									html+='<br>';
+
+									html += '<div class="project-meta colortxtblack">';
+										html += '<div>';
+											html+= 'Description';
+											html += '<div >';
+												html += '<p>';
+													html += data.description;
+												html += '</p>';
+											html += '</div>';
+										html += '</div>';
+										html += '<div>';
+											html+= 'Skills required';
+										
+											html += '<div class="skills">';
+												html += '<p>';
+													html += data.skills;
+												html += '</p>';
+											html += '</div>';
 										html += '</div>';
 									html += '</div>';
 								html += '</div>';
 							html += '</div>';
 						html += '</div>';
-					html += '</div>';
+					}
 				}
 				html += '</div>';
 				document.getElementById("projectsfeed").innerHTML = html;
