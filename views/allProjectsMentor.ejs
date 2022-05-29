@@ -12,7 +12,7 @@
 						</div>
 
 						<div class="col-md-6">
-
+							
 							<div id="add-project-btn" class="tryhard">
 								<form onsubmit="return addProjectBtn(this);">
 									<div class="submit-btns">
@@ -21,10 +21,15 @@
 									</div>
 								</form>
 							</div>
+							<br>
 
-							<div id="search-project-btn" class="tryhard">
-								<input type="text" id="myInput" onkeyup="showprojectsfeed()" placeholder="Search for projects.." title="Type mentor's name">
+							<h2 style="color: white; font-weight: bold;" class="">Open projects</h2>
+							<hr>
+							<div class="central-meta item">
+							<div id="search-project-btn">
+								<input style='height:40px' class="col-md-12" type="text" id="myInput" onkeyup="showprojectsfeed()" placeholder="Search by mentor" title="Type mentor's name">
 							</div>
+							<br>
 
 							<div class="loadMore" id="projectsfeed">
 
@@ -63,14 +68,14 @@
 				var input = document.getElementById("myInput");
     			var filter = input.value.toUpperCase();
 				var html = "";
-				html+= '<h2 style="color: white; font-weight: bold;" class="">';
-				html += "Open projects";
-				html+= "</h2>";
-				html += '<hr>';
-				html += '<div class="central-meta item">';
+				// html+= '<h2 style="color: white; font-weight: bold;" class="">';
+				// html += "Open projects";
+				// html+= "</h2>";
+				// html += '<hr>';
+				// html += '<div class="central-meta item">';
 				for (var a = 0; a < response.data.length; a++) {
 					var data = response.data[a];
-					if(data.status=="pending" && data.user.status == "mentor" && (!filter || filter==data.user.name.toUpperCase())){
+					if(data.status=="pending" && data.user.status == "mentor" && (!filter || data.user.name.toUpperCase().includes(filter))){
 						html += '<div class="central-meta item">';
 							html += '<div class="user-project">';
 								html += '<div class="project-info">';

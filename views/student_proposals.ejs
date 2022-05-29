@@ -11,11 +11,17 @@
 
 						</div>
 
-                        <div id="search-project-btn" class="tryhard">
-                            <input type="text" id="myInput" onkeyup="showstudentproposalsfeed()" placeholder="Search for projects.." title="Type mentor's name">
-                        </div>
+                        
 
 						<div class="col-md-6">
+
+                            <h2 style="color: white; font-weight: bold;" class="">Student Proposals</h2>
+							<hr>
+							<div class="central-meta item">
+							<div id="search-project-btn">
+								<input style='height:40px' class="col-md-12" type="text" id="myInput" onkeyup="showstudentproposalsfeed()" placeholder="Search by student" title="Type student's name">
+							</div>
+							<br>
 
 							<div class="loadMore" id="studentProposalsFeed">
 
@@ -42,14 +48,14 @@
                 var input = document.getElementById("myInput");
     			var filter = input.value.toUpperCase();
 				var html = "";
-				html+= '<h2 class="" style="color: white; font-weight: bold;">';
-				html += "Student proposals";
-				html+= "</h2>";
-				html += '<hr>';
-				html += '<div class="central-meta item">';
+				// html+= '<h2 class="" style="color: white; font-weight: bold;">';
+				// html += "Student proposals";
+				// html+= "</h2>";
+				// html += '<hr>';
+				// html += '<div class="central-meta item">';
 				for (var a = 0; a < response.data.length; a++) {
 					var data = response.data[a];
-                    if(data.user.status=="student"  && (!filter || filter==data.user.name.toUpperCase())){
+                    if(data.user.status=="student"  && (!filter || data.user.name.toUpperCase().includes(filter))) {
                         html += '<div class="central-meta item">';
                             html += '<div class="user-project">';
                                 html += '<div class="project-info">';
