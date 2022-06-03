@@ -9,6 +9,9 @@
   },
   "author": "",
   "license": "ISC",
+  "engines":{
+    "node": "16.15.0"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "ejs": "^3.1.7",

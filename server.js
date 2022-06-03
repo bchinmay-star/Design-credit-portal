@@ -29,10 +29,16 @@ socketIO.on("connection", function (socket) {
 	socketID = socket.id;
 });
 
-http.listen(3000, function () {
-	console.log("Server started at " + mainURL);
+let port = process.env.PORT;
+if (port==null || port==""){
+	port=3000;
+}
 
-	mongoClient.connect("mongodb://localhost:27017", function (error, client) {
+
+http.listen(port, function () {
+	console.log("Server started at successfully");
+
+	mongoClient.connect("mongodb+srv://admin-chinmay:admin-chinmay@design-credit-portal.5tkewkf.mongodb.net/?retryWrites=true&w=majority", function (error, client) {
 		var database = client.db("design_credit_management");
 		console.log("Database connected.");
 
